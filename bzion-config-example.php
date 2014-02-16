@@ -19,6 +19,8 @@ DEFINE("SITE_TITLE", "BZiON: A League Management System");
  */
 $classesDir = array (
     "classes/",
+    "classes/Database",
+    "classes/Database/Types",
     "includes/Carbon/src/Carbon/",
     "tests/"
 );

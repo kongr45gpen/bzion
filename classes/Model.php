@@ -46,8 +46,14 @@ abstract class Model {
      * The name of the database table used for queries
      * You can use this constant in static methods as such:
      * static::TABLE
+     * @var string
      */
     const TABLE = "";
+
+    /**
+     * An associative array linking class properties with their database columns
+     */
+    protected static $columns = array();
 
     /**
      * Construct a new Model
@@ -65,7 +71,7 @@ abstract class Model {
         $this->db = Database::getInstance();
 
         if ($id == 0) {
-            $this->valid  = false;
+            $this->valid = false;
             $this->result = array();
             return;
         }
@@ -74,15 +80,30 @@ abstract class Model {
             $this->id = $id;
         $this->table = static::TABLE;
 
-        $results = $this->db->query("SELECT * FROM " . $this->table . " WHERE " . $column . " = ? LIMIT 1", "i", array($id));
+        $results = $this->db->query("SELECT * FROM " . $this->table . " WHERE " . $column . " = ? LIMIT 1", "i", array(
+            $id
+        ));
 
         if (count($results) < 1) {
-            $this->valid  = false;
+            $this->valid = false;
             $this->result = array();
         } else {
-            $this->valid  = true;
+            $this->valid = true;
             $this->result = $results[0];
+            foreach ($this->getColumns() as $property => $column) {
+                $this->{$property} = $column->store($this->result[$column->getName()]);
+            }
         }
+    }
+
+    /**
+     * Get the columns of the database table
+     * @return Column[]
+     */
+    protected function getColumns() {
+        $columns = array();
+        $columns["id"] = Column::Int("id");
+        return $columns;
     }
 
     /**
@@ -91,8 +112,11 @@ abstract class Model {
      * @param mixed $value The value to set the column to
      * @param string $type The type of the value, can be 's' (string), 'i' (integer), 'd' (double) or 'b' (blob)
      */
-    public function update($name, $value, $type=NULL) {
-        $this->db->query("UPDATE ". static::TABLE . " SET `$name` = ? WHERE id = ?", $type."i", array($value, $this->id));
+    public function update($name, $value, $type = NULL) {
+        $this->db->query("UPDATE " . static::TABLE . " SET `$name` = ? WHERE id = ?", $type . "i", array(
+            $value,
+            $this->id
+        ));
     }
 
     /**
@@ -110,7 +134,9 @@ abstract class Model {
      * Permanently delete the object from the database
      */
     public function wipe() {
-        $this->db->query("DELETE FROM " . static::TABLE . " WHERE id = ?", "i", array($this->id));
+        $this->db->query("DELETE FROM " . static::TABLE . " WHERE id = ?", "i", array(
+            $this->id
+        ));
     }
 
     /**
@@ -131,7 +157,7 @@ abstract class Model {
 
     /**
      * Get an object's alias
-     * @return string|int The alias (or ID if the alias doesn't exist)
+     * @return string int alias (or ID if the alias doesn't exist)
      */
     public function getAlias() {
         if ($this->alias != null)
@@ -145,17 +171,18 @@ abstract class Model {
      * @param string $default The value that should be used if the alias is NULL. The object's ID will be used if a default value is not specified
      * @return string
      */
-    protected function getURL($dir="", $default = null) {
+    protected function getURL($dir = "", $default = null) {
         if (!empty($dir)) {
             $dir .= "/";
         }
         if (isset($this->alias) && $this->alias) {
             $alias = $this->alias;
-        } else if (!$default) {
-            $alias = $this->id;
-        } else {
-            $alias = $default;
-        }
+        } else
+            if (!$default) {
+                $alias = $this->id;
+            } else {
+                $alias = $default;
+            }
 
         $url = BASE_URL . '/' . $dir . $alias;
         return $url;
@@ -166,7 +193,7 @@ abstract class Model {
      * @param string $dir The virtual directory the URL should point to
      * @return string
      */
-    protected function getPermaLink($dir="") {
+    protected function getPermaLink($dir = "") {
         if (!empty($dir)) {
             $dir .= "/";
         }
@@ -182,7 +209,7 @@ abstract class Model {
      * @param string $type The type of the value, can be 's' (string), 'i' (integer), 'd' (double) or 'b' (blob)
      * @return int The ID of the object
      */
-    protected static function fetchIdFrom($value, $column, $type="s") {
+    protected static function fetchIdFrom($value, $column, $type = "s") {
         $results = self::fetchIdsFrom($column, $value, $type, false, "LIMIT 1");
 
         // Return the id or 0 if nothing was found
@@ -199,7 +226,7 @@ abstract class Model {
      * @param string $table The database table that will be searched
      * @return array A list of values, if $select was only one column, or the return array of $db->query if it was more
      */
-    protected static function fetchIds($additional_query='', $types='', $params=array(), $table = "", $select='id') {
+    protected static function fetchIds($additional_query = '', $types = '', $params = array(), $table = "", $select = 'id') {
         $table = (empty($table)) ? static::TABLE : $table;
         $db = Database::getInstance();
 
@@ -220,7 +247,7 @@ abstract class Model {
         // For example, if $select is "groups.id", we should convert it to
         // "id", because that's how MySQLi stores column names in the $results
         // array.
-        $selectArray = explode(".",$select);
+        $selectArray = explode(".", $select);
         $select = end($selectArray);
 
         foreach ($results as $r) {
@@ -240,13 +267,15 @@ abstract class Model {
      * @param string $table The database table which will be used for queries
      * @return array A list of values, if $select was only one column, or the return array of $db->query if it was more
      */
-    protected static function fetchIdsFrom($column, $possible_values, $type, $negate=false, $additional_query="", $table = "", $select='id') {
+    protected static function fetchIdsFrom($column, $possible_values, $type, $negate = false, $additional_query = "", $table = "", $select = 'id') {
         $question_marks = array();
         $types = "";
         $negation = ($negate) ? "NOT" : "";
 
-        if(!is_array($possible_values)) {
-            $possible_values = array($possible_values);
+        if (!is_array($possible_values)) {
+            $possible_values = array(
+                $possible_values
+            );
         }
 
         foreach ($possible_values as $p) {
@@ -267,18 +296,17 @@ abstract class Model {
         }
 
         return self::fetchIds($conditionString, $types, $possible_values, $table, $select);
-
     }
 
     /**
      * Generate an invalid object
      *
      * <code>
-     *     <?php
-     *     $object = Team::invalid();
+     * <?php
+     * $object = Team::invalid();
      *
-     *     get_class($object); // Team
-     *     $object->isValid(); // false
+     * get_class($object); // Team
+     * $object->isValid(); // false
      * </code>
      * @return Model
      */
@@ -290,14 +318,17 @@ abstract class Model {
      * Generate a URL-friendly unique alias for an object name
      *
      * @param string $name The original object name
-     * @return string|Null The generated alias, or Null if we couldn't make one
+     * @return string Null generated alias, or Null if we couldn't make one
      */
     static function generateAlias($name) {
         // Convert name to lowercase
         $name = strtolower($name);
 
         // List of characters which should be converted to dashes
-        $makeDash = array(' ', '_');
+        $makeDash = array(
+            ' ',
+            '_'
+        );
 
         $name = str_replace($makeDash, '-', $name);
 
@@ -318,7 +349,9 @@ abstract class Model {
 
         // Try to find duplicates
         $db = Database::getInstance();
-        $result = $db->query("SELECT alias FROM " . static::TABLE . " WHERE alias REGEXP ?", 's', array("^" . $name . "[0-9]*$"));
+        $result = $db->query("SELECT alias FROM " . static::TABLE . " WHERE alias REGEXP ?", 's', array(
+            "^" . $name . "[0-9]*$"
+        ));
 
         // The functionality of the following code block is provided in PHP 5.5's
         // array_column function. What is does is convert the multi-dimensional
@@ -334,9 +367,9 @@ abstract class Model {
         if (!in_array($name, $aliases))
             return $name;
 
-        // If there's already an entry with the alias we generated, put a number
-        // in the end of it and keep incrementing it until there is we find
-        // an open spot.
+            // If there's already an entry with the alias we generated, put a number
+            // in the end of it and keep incrementing it until there is we find
+            // an open spot.
         $i = 2;
         while (in_array($name . $i, $aliases)) {
             $i++;
@@ -344,5 +377,4 @@ abstract class Model {
 
         return $name . $i;
     }
-
 }

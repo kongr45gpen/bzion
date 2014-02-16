@@ -9,19 +9,19 @@ class Group extends Model {
      * The subject of the group
      * @var string
      */
-    private $subject;
+    protected $subject;
 
     /**
      * The time of the last message to the group
      * @var TimeDate
      */
-    private $last_activity;
+    protected $last_activity;
 
     /**
      * The id of the creator of the group
      * @var int
      */
-    private $creator;
+    protected $creator;
 
     /**
      * The status of the group
@@ -29,7 +29,7 @@ class Group extends Model {
      * Can be 'active', 'disabled', 'deleted' or 'reported'
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -37,20 +37,16 @@ class Group extends Model {
     const TABLE = "groups";
 
     /**
-     * Construct a new group
-     * @param int $id The group's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["subject"] = Column::String("subject");
+        $columns["last_activity"] = Column::DateTime("last_activity");
+        $columns["creator"] = Column::Int("creator");
+        $columns["status"] = Column::String("status");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $group = $this->result;
-
-        $this->subject = $group['subject'];
-        $this->last_activity = TimeDate::parse($group['last_activity']);
-        $this->creator = $group['creator'];
-        $this->status = $group['status'];
+        return $columns;
     }
 
     /**

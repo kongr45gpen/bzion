@@ -1,18 +1,18 @@
 <?php
-class DBDateTime extends Type {
+class DBArray extends Type {
 
-    protected static $alias = "datetime";
+    protected static $alias = "serialized";
 
     public static function getDBType() {
         return "s";
     }
 
     public static function store($content) {
-        return new TimeDate($content);
+        return unserialize($content);
     }
 
     public static function restore($stored) {
-        return new $stored->format(DATE_FORMAT);
+        return serialize($content);
     }
 
 }

@@ -10,31 +10,31 @@ class Invitation extends Model
      * The ID of the player receiving the invite
      * @var int
      */
-    private $invited_player;
+    protected $invited_player;
 
     /**
      * The ID of the sender of the invite
      * @var int
      */
-    private $sent_by;
+    protected $sent_by;
 
     /**
      * The ID of the team a player was invited to
      * @var int
      */
-    private $team;
+    protected $team;
 
     /**
      * The time the invitation will expire (Format: YYYY-MM-DD HH:MM:SS)
      * @var DateTime
      */
-    private $expiration;
+    protected $expiration;
 
     /**
      * The optional message sent to a player to join a team
      * @var string
      */
-    private $text;
+    protected $text;
 
     /**
      * The name of the database table used for queries
@@ -43,20 +43,17 @@ class Invitation extends Model
     const TABLE = "invitations";
 
     /**
-     * Construct a new invite
-     * @param int $id The invite's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
-        parent::__construct($id);
-        if (!$this->valid) return;
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["invited_player"] = Column::Int("invited_player");
+        $columns["sent_by"] = Column::Int("sent_by");
+        $columns["team"] = Column::Int("team");
+        $columns["expiration"] = Column::DateTime("expiration");
+        $columns["text"] = Column::String("text");
 
-        $invitation = $this->result;
-
-        $this->invited_player = $invitation['invited_player'];
-        $this->sent_by = $invitation['sent_by'];
-        $this->team = $invitation['team'];
-        $this->expiration = $invitation['expiration'];
-        $this->text = $invitation['text'];
+        return $columns;
     }
 
     /**

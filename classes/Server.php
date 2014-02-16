@@ -12,37 +12,37 @@ class Server extends Model
      * The name of the server
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * The address of the server
      * @var string
      */
-    private $address;
+    protected $address;
 
     /**
      * The id of the owner of the server
      * @var int
      */
-    private $owner;
+    protected $owner;
 
     /**
      * The server's bzfquery information
      * @var array
      */
-    private $info;
+    protected $info;
 
     /**
      * The date of the last bzfquery of the server
      * @var TimeDate
      */
-    private $updated;
+    protected $updated;
 
     /**
      * The server's status
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -50,21 +50,17 @@ class Server extends Model
     const TABLE = "servers";
 
     /**
-     * Construct a new Server
-     * @param int $id The server's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["name"] = Column::String("name");
+        $columns["address"] = Column::String("address");
+        $columns["owner"] = Column::Int("owner");
+        $columns["info"] = Column::DBArray("info");
+        $columns["updated"] = Column::DateTime("updated");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $server = $this->result;
-
-        $this->name = $server['name'];
-        $this->address = $server['address'];
-        $this->owner = $server['owner'];
-        $this->info = unserialize($server['info']);
-        $this->updated = new TimeDate($server['updated']);
+        return $columns;
     }
 
     /**

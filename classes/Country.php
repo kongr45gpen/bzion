@@ -9,13 +9,13 @@ class Country extends Model {
      * The name of the country
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * The flag of the country
      * @var string
      */
-    private $flag;
+    protected $flag;
 
     /**
      * The name of the database table used for queries
@@ -23,19 +23,14 @@ class Country extends Model {
     const TABLE = "countries";
 
     /**
-     * Construct a new Country
-     * @param int $id The country's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["name"] = Column::String("name");
+        $columns["flag"] = Column::Int("flag");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $country = $this->result;
-
-        $this->name = $country['name'];
-        $this->flag = $country['flag'];
-
+        return $columns;
     }
 
     /**

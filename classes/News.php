@@ -9,37 +9,37 @@ class News extends Model {
      * The subject of the news article
      * @var string
      */
-    private $subject;
+    protected $subject;
 
     /**
      * The content of the news article
      * @var string
      */
-    private $content;
+    protected $content;
 
     /**
      * The creation date of the news article
      * @var string
      */
-    private $created;
+    protected $created;
 
     /**
      * The date the news article was last updated
      * @var string
      */
-    private $updated;
+    protected $updated;
 
     /**
      * The ID of the author of the news article
      * @var int
      */
-    private $author;
+    protected $author;
 
     /**
      * The status of the news article
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -47,23 +47,18 @@ class News extends Model {
     const TABLE = "news";
 
     /**
-     * Construct a new News article
-     * @param int $id The news article's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["subject"] = Column::String("subject");
+        $columns["content"] = Column::String("content");
+        $columns["created"] = Column::DateTime("created");
+        $columns["updated"] = Column::DateTime("updated");
+        $columns["author"] = Column::Int("author");
+        $columns["status"] = Column::String("status");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $news = $this->result;
-
-        $this->subject = $news['subject'];
-        $this->content = $news['content'];
-        $this->created = new TimeDate($news['created']);
-        $this->updated = new TimeDate($news['updated']);
-        $this->author = $news['author'];
-        $this->status = $news['status'];
-
+        return $columns;
     }
 
     /**

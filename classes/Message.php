@@ -10,25 +10,25 @@ class Message extends Model
      * The ID of the group this message belongs to
      * @var int
      */
-    private $group_to;
+    protected $group_to;
 
     /**
      * The ID of the player who sent the message
      * @var int
      */
-    private $player_from;
+    protected $player_from;
 
     /**
      * The timestamp of when the message was sent
      * @var TimeDate
      */
-    private $timestamp;
+    protected $timestamp;
 
     /**
      * The content of the message
      * @var string
      */
-    private $message;
+    protected $message;
 
     /**
      * The status of the message
@@ -36,7 +36,7 @@ class Message extends Model
      * Can be 'sent', 'hidden', 'deleted' or 'reported'
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -44,21 +44,17 @@ class Message extends Model
     const TABLE = "messages";
 
     /**
-     * Construct a new message
-     * @param int $id The message's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["group_to"] = Column::Int("group_to");
+        $columns["player_from"] = Column::Int("player_from");
+        $columns["timestamp"] = Column::DateTime("timestamp");
+        $columns["message"] = Column::String("message");
+        $columns["status"] = Column::String("status");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $message = $this->result;
-
-        $this->group_to = $message['group_to'];
-        $this->player_from = $message['player_from'];
-        $this->timestamp = new TimeDate($message['timestamp']);
-        $this->message = $message['message'];
-        $this->status = $message['status'];
+        return $columns;
     }
 
     /**

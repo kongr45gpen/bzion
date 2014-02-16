@@ -9,43 +9,43 @@ class Page extends Model {
      * The name of the page
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * The content of the page
      * @var string
      */
-    private $content;
+    protected $content;
 
     /**
      * The creation date of the page
      * @var TimeDate
      */
-    private $created;
+    protected $created;
 
     /**
      * The date the page was last updated
      * @var TimeDate
      */
-    private $updated;
+    protected $updated;
 
     /**
      * The ID of the author of the page
      * @var int
      */
-    private $author;
+    protected $author;
 
     /**
      * Whether the page is the home page
      * @var boolean
      */
-    private $home;
+    protected $home;
 
     /**
      * The status of the page
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -53,25 +53,20 @@ class Page extends Model {
     const TABLE = "pages";
 
     /**
-     * Construct a new Page
-     * @param int $id The page's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["name"] = Column::String("name");
+        $columns["alias"] = Column::String("alias");
+        $columns["content"] = Column::String("content");
+        $columns["created"] = Column::DateTime("created");
+        $columns["updated"] = Column::DateTime("updated");
+        $columns["author"] = Column::Int("author");
+        $columns["home"] = Column::Int("home");
+        $columns["status"] = Column::String("status");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $page = $this->result;
-
-        $this->name = $page['name'];
-        $this->alias = $page['alias'];
-        $this->content = $page['content'];
-        $this->created = new TimeDate($page['created']);
-        $this->updated = new TimeDate($page['updated']);
-        $this->author = $page['author'];
-        $this->home = $page['home'];
-        $this->status = $page['status'];
-
+        return $columns;
     }
 
     /**

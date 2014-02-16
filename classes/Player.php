@@ -10,73 +10,73 @@ class Player extends Model
      * The bzid of the player
      * @var int
      */
-    private $bzid;
+    protected $bzid;
 
     /**
      * The id of the player's team
      * @var int
      */
-    private $team;
+    protected $team;
 
     /**
      * The username of the player
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * The player's status
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The access level of the player
      * @var int
      */
-    private $access;
+    protected $access;
 
     /**
      * The url of the player's profile avatar
      * @var string
      */
-    private $avatar;
+    protected $avatar;
 
     /**
      * The player's profile description
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * The id of the player's country
      * @var int
      */
-    private $country;
+    protected $country;
 
     /**
      * The player's timezone, in terms of distance from UTC (i.e. -5 for UTC-5)
      * @var int
      */
-    private $timezone;
+    protected $timezone;
 
     /**
      * The date the player joined the site
      * @var TimeDate
      */
-    private $joined;
+    protected $joined;
 
     /**
      * The date of the player's last login
      * @var TimeDate
      */
-    private $last_login;
+    protected $last_login;
 
     /**
      * A section for admins to write notes about players
      * @var string
      */
-    private $admin_notes;
+    protected $admin_notes;
 
     /**
      * The name of the database table used for queries
@@ -84,30 +84,25 @@ class Player extends Model
     const TABLE = "players";
 
     /**
-     * Construct a new Player
-     * @param int $id The player's ID
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["bzid"] = Column::Int("bzid");
+        $columns["username"] = Column::String("username");
+        $columns["alias"] = Column::String("alias");
+        $columns["team"] = Column::Int("team");
+        $columns["status"] = Column::String("status");
+        $columns["access"] = Column::Int("access");
+        $columns["avatar"] = Column::String("avatar");
+        $columns["description"] = Column::String("description");
+        $columns["country"] = Column::Int("country");
+        $columns["timezone"] = Column::Double("timezone");
+        $columns["joined"] = Column::DateTime("joined");
+        $columns["last_login"] = Column::DateTime("last_login");
+        $columns["admin_notes"] = Column::String("admin_notes");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $player = $this->result;
-
-        $this->bzid = $player['bzid'];
-        $this->username = $player['username'];
-        $this->alias = $player['alias'];
-        $this->team = $player['team'];
-        $this->status = $player['status'];
-        $this->access = $player['access'];
-        $this->avatar = $player['avatar'];
-        $this->description = $player['description'];
-        $this->country = $player['country'];
-        $this->timezone = $player['timezone'];
-        $this->joined = new TimeDate($player['joined']);
-        $this->last_login = new TimeDate($player['last_login']);
-        $this->admin_notes = $player['admin_notes'];
-
+        return $columns;
     }
 
     /**

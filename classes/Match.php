@@ -10,73 +10,73 @@ class Match extends Model
      * The ID of the first team of the match
      * @var int
      */
-    private $team_a;
+    protected $team_a;
 
     /**
      * The ID of the second team of the match
      * @var int
      */
-    private $team_b;
+    protected $team_b;
 
     /**
      * The match points (usually the number of flag captures) Team A scored
      * @var int
      */
-    private $team_a_points;
+    protected $team_a_points;
 
      /**
      * The match points Team B scored
      * @var int
      */
-    private $team_b_points;
+    protected $team_b_points;
 
      /**
      * The ELO score of Team A after the match
      * @var int
      */
-    private $team_a_elo_new;
+    protected $team_a_elo_new;
 
      /**
      * The ELO score of Team B after the match
      * @var int
      */
-    private $team_b_elo_new;
+    protected $team_b_elo_new;
 
     /**
      * The absolute value of the ELO score difference
      * @var int
      */
-    private $elo_diff;
+    protected $elo_diff;
 
     /**
      * The timestamp representing when the match was played
      * @var string
      */
-    private $timestamp;
+    protected $timestamp;
 
     /**
      * The timestamp representing when the match information was last updated
      * @var string
      */
-    private $updated;
+    protected $updated;
 
     /**
      * The duration of the match in minutes
      * @var int
      */
-    private $duration;
+    protected $duration;
 
     /**
      * The ID of the person (i.e. referee) who last updated the match information
      * @var string
      */
-    private $entered_by;
+    protected $entered_by;
 
     /**
      * The status of the match. Can be 'entered', 'disabled', 'deleted' or 'reported'
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * The name of the database table used for queries
@@ -84,29 +84,24 @@ class Match extends Model
     const TABLE = "matches";
 
     /**
-     * Construct a new Match
-     * @param int $id The match's ID
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["team_a"] = Column::Int("team_a");
+        $columns["team_b"] = Column::Int("team_b");
+        $columns["team_a_points"] = Column::Double("team_a_points");
+        $columns["team_b_points"] = Column::Double("team_b_points");
+        $columns["team_a_elo_new"] = Column::Double("team_a_elo_new");
+        $columns["team_b_elo_new"] = Column::Double("team_b_elo_new");
+        $columns["elo_diff"] = Column::Double("elo_diff");
+        $columns["timestamp"] = Column::DateTime("timestamp");
+        $columns["updated"] = Column::DateTime("updated");
+        $columns["duration"] = Column::Double("duration");
+        $columns["timestamp"] = Column::DateTime("timestamp");
+        $columns["status"] = Column::String("status");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $match = $this->result;
-
-        $this->team_a = $match['team_a'];
-        $this->team_b = $match['team_b'];
-        $this->team_a_points = $match['team_a_points'];
-        $this->team_b_points = $match['team_b_points'];
-        $this->team_a_elo_new = $match['team_a_elo_new'];
-        $this->team_b_elo_new = $match['team_b_elo_new'];
-        $this->elo_diff = $match['elo_diff'];
-        $this->timestamp = new TimeDate($match['timestamp']);
-        $this->updated = new TimeDate($match['updated']);
-        $this->duration = $match['duration'];
-        $this->entered_by = $match['entered_by'];
-        $this->status = $match['status'];
-
+        return $columns;
     }
 
     /**

@@ -9,43 +9,43 @@ class Ban extends Model {
      * The id of the banned player
      * @var int
      */
-    private $player;
+    protected $player;
 
     /**
      * The IP of the banned player if the league would like to implement a global ban list
      * @var string
      */
-    private $ipAddress;
+    protected $ipAddress;
 
     /**
      * The ban expiration date
      * @var TimeDate
      */
-    private $expiration;
+    protected $expiration;
 
     /**
      * The ban reason
      * @var string
      */
-    private $reason;
+    protected $reason;
 
     /**
      * The ban creation date
      * @var TimeDate
      */
-    private $created;
+    protected $created;
 
     /**
      * The date the ban was last updated
      * @var TimeDate
      */
-    private $updated;
+    protected $updated;
 
     /**
      * The id of the ban author
      * @var int
      */
-    private $author;
+    protected $author;
 
     /**
      * The name of the database table used for queries
@@ -53,24 +53,19 @@ class Ban extends Model {
     const TABLE = "bans";
 
     /**
-     * Construct a new Ban
-     * @param int $id The ban's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["player"] = Column::Int("player");
+        $columns["ipAddress"] = Column::String("ip_address");
+        $columns["expiration"] = Column::DateTime("expiration");
+        $columns["reason"] = Column::String("reason");
+        $columns["created"] = Column::DateTime("created");
+        $columns["updated"] = Column::DateTime("updated");
+        $columns["author"] = Column::Int("expiration");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $ban = $this->result;
-
-        $this->player = $ban['player'];
-        $this->ipAddress = $ban['ip_address'];
-        $this->expiration = new TimeDate($ban['expiration']);
-        $this->reason = $ban['reason'];
-        $this->created = new TimeDate($ban['created']);
-        $this->updated = new TimeDate($ban['updated']);
-        $this->author = $ban['author'];
-
+        return $columns;
     }
 
     /**

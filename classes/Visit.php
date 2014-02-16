@@ -10,37 +10,37 @@ class Visit extends Model
      * The id of the visiting user
      * @var int
      */
-    private $player;
+    protected $player;
 
     /**
      * The ip of the visiting user
      * @var string
      */
-    private $ip;
+    protected $ip;
 
     /**
      * The host of the visiting user
      * @var string
      */
-    private $host;
+    protected $host;
 
     /**
      * The user agent of the visiting user
      * @var string
      */
-    private $user_agent;
+    protected $user_agent;
 
     /**
      * The HTTP_REFERER of the visiting user
      * @var string
      */
-    private $referer;
+    protected $referer;
 
     /**
      * The timestamp of the visit
      * @var DateTime
      */
-    private $timestamp;
+    protected $timestamp;
 
     /**
      * The name of the database table used for queries
@@ -48,23 +48,18 @@ class Visit extends Model
     const TABLE = "visits";
 
     /**
-     * Construct a new Visit
-     * @param int $id The visitor's id
+     * @see Model::getColumns()
      */
-    function __construct($id) {
+    protected function getColumns() {
+        $columns = parent::getColumns();
+        $columns["player"] = Column::Int("player");
+        $columns["ip"] = Column::String("ip");
+        $columns["host"] = Column::String("host");
+        $columns["user_agent"] = Column::String("user_agent");
+        $columns["referer"] = Column::String("referer");
+        $columns["timestamp"] = Column::DateTime("timestamp");
 
-        parent::__construct($id);
-        if (!$this->valid) return;
-
-        $visit = $this->result;
-
-        $this->player = $visit['player'];
-        $this->ip = $visit['ip'];
-        $this->host = $visit['host'];
-        $this->user_agent = $visit['user_agent'];
-        $this->referer = $visit['referer'];
-        $this->timestamp = new DateTime($visit['timestamp']);
-
+        return $columns;
     }
 
     /**
