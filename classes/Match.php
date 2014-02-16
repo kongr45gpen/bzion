@@ -50,13 +50,13 @@ class Match extends Model
 
     /**
      * The timestamp representing when the match was played
-     * @var string
+     * @var TimeDate
      */
     protected $timestamp;
 
     /**
      * The timestamp representing when the match information was last updated
-     * @var string
+     * @var TimeDate
      */
     protected $updated;
 
@@ -99,6 +99,7 @@ class Match extends Model
         $columns["updated"] = Column::DateTime("updated");
         $columns["duration"] = Column::Double("duration");
         $columns["timestamp"] = Column::DateTime("timestamp");
+        $columns["entered_by"] = Column::Int("entered_by");
         $columns["status"] = Column::String("status");
 
         return $columns;

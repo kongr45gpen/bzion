@@ -19,13 +19,13 @@ class News extends Model {
 
     /**
      * The creation date of the news article
-     * @var string
+     * @var TimeDate
      */
     protected $created;
 
     /**
      * The date the news article was last updated
-     * @var string
+     * @var TimeDate
      */
     protected $updated;
 
