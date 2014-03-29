@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+require(__DIR__ . "/../vendor/autoload.php");
+require(__DIR__ . "/AppKernel.php");
+
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+$console = new Application(new AppKernel("prod", 1));
+
+$console->add(new ConfigCommand);
+
+$console->run();

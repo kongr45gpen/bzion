@@ -18,11 +18,11 @@ $requestContext = new RequestContext();
 $requestContext->fromRequest($request);
 
 // Disable caching while on the DEVELOPMENT environment
-$cacheDir = DEVELOPMENT ? null : __DIR__.'/cache';
+$cacheDir = DEVELOPMENT ? null : __DIR__.'/app/cache';
 
 $router = new Router(
     new YamlFileLoader($locator),
-    'routes.yml',
+    'app/routing.yml',
     array('cache_dir' => $cacheDir),
     $requestContext
 );
