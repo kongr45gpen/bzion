@@ -9,6 +9,6 @@
     "grunt-cli"           :  "*",
     "grunt-contrib-watch" :  "*",
     "grunt-contrib-sass"  :  "*",
-    "grunt-autoprefixer"  :  "*"
+    "grunt-autoprefixer"  :  "*",
   }
 }
