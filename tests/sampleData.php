@@ -58,6 +58,15 @@ for ($id = 1; $id <= 400; $id++)
 echo " done!";
 
 echo "\nAdding matches...";
+Match::enterMatch($reptitles->getId(), $gsepar->getId(), 1, 9000, 17, $kierra->getId());
+Match::enterMatch($olfm->getId(), $lweak->getId(), 0, 0, 20, $blast->getId());
+Match::enterMatch($fflood->getId(), $lweak->getId(), 1, 15, 20, $autoreport->getId());
+Match::enterMatch($gsepar->getId(), $fradis->getId(), 8, 23, 30, $kierra->getId());
+Match::enterMatch($olfm->getId(), $lweak->getId(), 5, 4, 20, $kierra->getId());
+Match::enterMatch($reptitles->getId(), $gsepar->getId(), 1, 1500, 20, $autoreport->getId());
+Match::enterMatch($olfm->getId(), $lweak->getId(), 1, 1, 30, $autoreport->getId());
+Match::enterMatch($fradis->getId(), $gsepar->getId(), 1, 2, 20, $kierra->getId());
+echo " done!";
 
 for ($id = 1; $id <= 2000; $id++)
 {
@@ -73,6 +82,27 @@ Server::addServer("BZPro Public HiX FFA", "bzpro.net:5154", $tw1sted->getId());
 Server::addServer("BZPro Public HiX Rabbit Chase", "bzpro.net:5155", $tw1sted->getId());
 echo " done!";
 
+echo "\nAdding messages...";
+$group_to = Group::createGroup("New blog", $snake->getId(), array(
+    $alezakos->getId(),
+    $allejo->getId(),
+    $ashvala->getId(),
+    $autoreport->getId(),
+    $blast->getId(),
+    $kierra->getId(),
+    $mdskpr->getId(),
+    $snake->getId(),
+    $tw1sted->getId()
+));
+Message::sendMessage($group_to->getId(), $snake->getId(), "Check out my new blog!");
+echo " done!";
+
+echo "\nAdding bans...";
+Ban::addBan($snake->getId(), $alezakos->getId(), "2014-09-15", "Snarke 12534 has been barned again", "Cuz you're snake", "256.512.104.1");
+// Ban::addBan($allejo->getId(), $tw1sted->getId(), "2014-05-17", "for using 'dope'", "dope", array("127.0.2.1", "128.0.3.2"));
+// Ban::addBan($tw1sted->getId(), $alezakos->getId(), "2014-06-12", "tw1sted banned for being too awesome");
+// Ban::addBan($alezakos->getId(), $tw1sted->getId(), "2014-11-01", "alezakos banned for breaking the build", "For breaking the build", array("256.512.124.1", "256.512.124.3"));
+echo " done!";
 
 echo "\nAdding pages...";
 Page::addPage("Rules", "<p>This is a test page.</p>\n<p>Lets hope this works!</p>", $tw1sted->getId());

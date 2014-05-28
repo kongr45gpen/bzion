@@ -45,6 +45,12 @@ abstract class Service
     private static $container;
 
     /**
+     * The kernel's environment (prod, debug, profile or test)
+     * @var string
+     */
+    private static $environment;
+
+    /**
      * @param Request $request
      */
     public static function setRequest($request)
@@ -134,5 +140,15 @@ abstract class Service
     public static function setContainer(&$container)
     {
         self::$container = $container;
+    }
+
+    public static function getEnvironment()
+    {
+        return self::$environment;
+    }
+
+    public static function setEnvironment($environment)
+    {
+        self::$environment = $environment;
     }
 }

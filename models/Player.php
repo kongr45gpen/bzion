@@ -237,10 +237,10 @@ class Player extends AliasModel
     public function getLinkLiteral()
     {
         if ($this->isDisabled()) {
-            return '<span>' . $this->getUsername() . '</span>';
+            return '<span>' . $this->getEscapedUsername() . '</span>';
         }
 
-        return '<a href="' . $this->getURL() . '">' . $this->getUsername() . '</a>';
+        return '<a href="' . $this->getURL() . '">' . $this->getEscapedUsername() . '</a>';
     }
 
     /**
@@ -386,6 +386,15 @@ class Player extends AliasModel
     }
 
     /**
+     * Get the player's, safe for use in your HTML
+     * @return string The username
+     */
+    public function getEscapedUsername()
+    {
+        return $this->escape($this->username);
+    }
+
+    /**
      * Give or remove a role to/form a player
      *
      * @param int    $role_id The role ID to add or remove
@@ -441,6 +450,25 @@ class Player extends AliasModel
         return self::arrayIdToModel(
             parent::fetchIdsFrom("status", array("active"), "s", false)
         );
+    }
+
+    /**
+     * Send a notification to a player
+     * @param  string       $message The content of the notification
+     * @return Notification The sent notification
+     */
+    public function notify($message)
+    {
+        return Notification::newNotification($this->getId(), $message);
+    }
+
+    /**
+     * Show the number of notifications the user hasn't read yet
+     * @return int
+     */
+    public function countUnreadNotifications()
+    {
+        return Notification::countUnreadNotifications($this->id);
     }
 
     /**

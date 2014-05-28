@@ -46,7 +46,7 @@ class MessageController extends JSONController
                 $content = $form->get('Message')->getData();
 
                 $group_to = Group::createGroup($subject, $me->getId(), $recipients);
-                Message::sendMessage($group_to->getId(), $me->getId(), $content);
+                $group_to->sendMessage($me, $content);
 
                 if ($this->isJson())
                     return new JsonResponse(array(
@@ -59,7 +59,7 @@ class MessageController extends JSONController
                 throw new BadRequestException($this->getErrorMessage($form));
         }
 
-        return array("form" => $form->createView(), "players" => Player::getPlayers());
+        return array("form" => $form->createView());
     }
 
     public function showAction(Group $discussion, Player $me, Request $request)
@@ -131,7 +131,7 @@ class MessageController extends JSONController
         if (trim($message) == '')
             throw new BadRequestException("You can't send an empty message!");
 
-        Message::sendMessage($to->getId(), $from->getId(), $message);
+        $to->sendMessage($from, $message);
 
         $this->getRequest()->getSession()->getFlashBag()->add('success',
             "Your message was sent successfully");
@@ -166,7 +166,7 @@ class MessageController extends JSONController
 
             if (!$recipient->isValid()) {
                 $error = ($listingUsernames)
-                       ? "There is no player called " . htmlentities($rid, ENT_QUOTES, 'utf-8')
+                       ? "There is no player called $rid" // Symfony auto-escapes $rid
                        : "One of the recipients you specified does not exist";
                 $form->get('Recipients')->addError(new FormError($error));
             } else {

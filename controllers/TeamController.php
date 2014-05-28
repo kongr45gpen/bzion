@@ -24,10 +24,10 @@ class TeamController extends HTMLController
         return $this->showConfirmationForm(function () use (&$team, &$session) {
             $team->delete();
             $session->getFlashBag()->add('success',
-                     "The team {$team->getName()} was deleted successfully");
+                     "The team {$team->getEscapedName()} was deleted successfully");
 
             return new RedirectResponse(Service::getGenerator()->generate('team_list'));
-        }, null, array('team' => $team));
+        }, null, array('team' => $team), "Delete");
     }
 
     public function kickAction(Team $team, Player $player, Player $me, Session $session)
@@ -43,11 +43,11 @@ class TeamController extends HTMLController
         return $this->showConfirmationForm(function () use (&$team, &$player, &$session) {
             $team->removeMember($player->getId());
 
-            $message = "Player {$player->getUsername()} has been kicked from {$team->getName()}";
+            $message = "Player {$player->getEscapedUsername()} has been kicked from {$team->getEscapedName()}";
             $session->getFlashBag()->add('success', $message);
 
             return new RedirectResponse($team->getUrl());
-        }, null, array('team' => $team, 'player' => $player));
+        }, null, array('team' => $team, 'player' => $player), "Kick");
     }
 
     public function abandonAction(Team $team, Player $me, Session $session)
@@ -65,7 +65,7 @@ class TeamController extends HTMLController
             $session->getFlashBag()->add('success', $message);
 
             return new RedirectResponse($team->getUrl());
-        }, null, array('team' => $team));
+        }, null, array('team' => $team), "Abandon");
     }
 
     /*
