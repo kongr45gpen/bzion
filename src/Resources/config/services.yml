@@ -1,0 +1,7 @@
+parameters:
+#    bz_ion.example.class: BZIon\Bundle\Example
+
+services:
+#    bz_ion.example:
+#        class: %bz_ion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

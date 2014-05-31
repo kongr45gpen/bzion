@@ -1,0 +1,40 @@
+BZIon\Bundle\Entity\Player:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        bzid:
+            type: string
+            length: 255
+            unique: yes
+        username:
+            type: string
+            length: '32'
+        alias:
+            type: string
+            length: '32'
+            unique: yes
+        status:
+            type: string
+            length: '32'
+        avatar:
+            type: string
+            length: '200'
+        description:
+            type: text
+        timezone:
+            type: smallint
+        joined:
+            type: datetime
+        lastLogin:
+            type: datetime
+            column: last_login
+        adminNotes:
+            type: text
+            column: admin_notes
+    lifecycleCallbacks: {  }

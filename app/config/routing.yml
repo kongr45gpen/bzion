@@ -1,0 +1,4 @@
+bz_ion:
+    resource: "@BZIonBundle/Resources/config/routing.yml"
+    prefix:   /
+
