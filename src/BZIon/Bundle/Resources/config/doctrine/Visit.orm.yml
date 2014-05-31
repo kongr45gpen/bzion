@@ -22,4 +22,8 @@ BZIon\Bundle\Entity\Visit:
             length: '200'
         timestamp:
             type: datetime
+    manyToOne:
+        player:
+            targetEntity: Player
+            inversedBy: visits
     lifecycleCallbacks: {  }

@@ -23,4 +23,14 @@ BZIon\Bundle\Entity\Ban:
             type: datetime
         updated:
             type: datetime
+    oneToMany:
+        ips:
+            targetEntity: BannedIP
+            mappedBy: Ban
+    manyToOne:
+        player:
+            targetEntity: Player
+            inversedBy: bans
+            joinColumn:
+                nullable: false
     lifecycleCallbacks: {  }

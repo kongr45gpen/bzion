@@ -52,4 +52,32 @@ class BannedIP
     {
         return $this->ipAddress;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Ban
+     */
+    private $ban;
+
+
+    /**
+     * Set ban
+     *
+     * @param \BZIon\Bundle\Entity\Ban $ban
+     * @return BannedIP
+     */
+    public function setBan(\BZIon\Bundle\Entity\Ban $ban = null)
+    {
+        $this->ban = $ban;
+
+        return $this;
+    }
+
+    /**
+     * Get ban
+     *
+     * @return \BZIon\Bundle\Entity\Ban 
+     */
+    public function getBan()
+    {
+        return $this->ban;
+    }
 }

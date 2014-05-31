@@ -192,4 +192,77 @@ class Ban
     {
         return $this->updated;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ips;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ips = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ips
+     *
+     * @param \BZIon\Bundle\Entity\BannedIP $ips
+     * @return Ban
+     */
+    public function addIp(\BZIon\Bundle\Entity\BannedIP $ips)
+    {
+        $this->ips[] = $ips;
+
+        return $this;
+    }
+
+    /**
+     * Remove ips
+     *
+     * @param \BZIon\Bundle\Entity\BannedIP $ips
+     */
+    public function removeIp(\BZIon\Bundle\Entity\BannedIP $ips)
+    {
+        $this->ips->removeElement($ips);
+    }
+
+    /**
+     * Get ips
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIps()
+    {
+        return $this->ips;
+    }
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $player;
+
+
+    /**
+     * Set player
+     *
+     * @param \BZIon\Bundle\Entity\Player $player
+     * @return Ban
+     */
+    public function setPlayer(\BZIon\Bundle\Entity\Player $player = null)
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    /**
+     * Get player
+     *
+     * @return \BZIon\Bundle\Entity\Player 
+     */
+    public function getPlayer()
+    {
+        return $this->player;
+    }
 }

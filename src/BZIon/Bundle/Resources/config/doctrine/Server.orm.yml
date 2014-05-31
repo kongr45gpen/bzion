@@ -21,4 +21,7 @@ BZIon\Bundle\Entity\Server:
         status:
             type: string
             length: '32'
+    manyToOne:
+        owner:
+            targetEntity: Player
     lifecycleCallbacks: {  }

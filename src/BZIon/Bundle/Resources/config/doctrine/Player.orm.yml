@@ -42,4 +42,39 @@ BZIon\Bundle\Entity\Player:
             type: text
             column: admin_notes
             nullable: yes
+    oneToMany:
+        bans:
+            targetEntity: Ban
+            mappedBy: players
+        invitationsReceived:
+            targetEntity: Invitation
+            mappedBy: invitedPlayer
+        messagesSent:
+            targetEntity: Message
+            mappedBy: sender
+        notifications:
+            targetEntity: Notification
+            mappedBy: receiver
+        pastCallsigns:
+            targetEntity: PastCallsign
+            mappedBy: player
+        visits:
+            targetEntity: Visit
+            mappedBy: player
+    manyToOne:
+        country:
+            targetEntity: Country
+            inversedBy: players
+            joinColumn:
+                nullable: false
+        team:
+            targetEntity: Team
+            inversedBy: members
+    manyToMany:
+        discussions:
+            targetEntity: Discussion
+            inversedBy: players
+        roles:
+            targetEntity: Role
+            inversedBy: players
     lifecycleCallbacks: {  }

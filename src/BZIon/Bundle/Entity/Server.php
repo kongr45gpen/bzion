@@ -164,4 +164,32 @@ class Server
     {
         return $this->status;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $owner;
+
+
+    /**
+     * Set owner
+     *
+     * @param \BZIon\Bundle\Entity\Player $owner
+     * @return Server
+     */
+    public function setOwner(\BZIon\Bundle\Entity\Player $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \BZIon\Bundle\Entity\Player 
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
 }

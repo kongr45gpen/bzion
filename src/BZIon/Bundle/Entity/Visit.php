@@ -164,4 +164,32 @@ class Visit
     {
         return $this->timestamp;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\player
+     */
+    private $player;
+
+
+    /**
+     * Set player
+     *
+     * @param \BZIon\Bundle\Entity\player $player
+     * @return Visit
+     */
+    public function setPlayer(\BZIon\Bundle\Entity\player $player = null)
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    /**
+     * Get player
+     *
+     * @return \BZIon\Bundle\Entity\player 
+     */
+    public function getPlayer()
+    {
+        return $this->player;
+    }
 }

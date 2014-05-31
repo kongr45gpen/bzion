@@ -11,4 +11,10 @@ BZIon\Bundle\Entity\PastCallsign:
         username:
             type: string
             length: '32'
+    manyToOne:
+        player:
+            targetEntity: Player
+            inversedBy: pastCallsigns
+            joinColumn:
+                nullable: false
     lifecycleCallbacks: {  }

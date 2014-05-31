@@ -12,4 +12,8 @@ BZIon\Bundle\Entity\BannedIP:
             type: string
             length: '15'
             column: ip_address
+    manyToOne:
+        ban:
+            targetEntity: Ban
+            inversedBy: ips
     lifecycleCallbacks: {  }

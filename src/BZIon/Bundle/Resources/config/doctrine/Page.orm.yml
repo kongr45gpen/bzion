@@ -20,9 +20,19 @@ BZIon\Bundle\Entity\Page:
             type: datetime
         updated:
             type: datetime
-        home:
-            type: boolean
         status:
             type: string
             length: '32'
+    manyToOne:
+        author:
+            targetEntity: Player
+            joinColumn:
+                nullable: false
+        parent:
+            targetEntity: Page
+            inversedBy: children
+    oneToMany:
+        children:
+            targetEntity: Page
+            mappedBy: parent
     lifecycleCallbacks: {  }

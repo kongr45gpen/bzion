@@ -304,4 +304,371 @@ class Player
     {
         return $this->adminNotes;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Country
+     */
+    private $country;
+
+
+    /**
+     * Set country
+     *
+     * @param \BZIon\Bundle\Entity\Country $country
+     * @return Player
+     */
+    public function setCountry(\BZIon\Bundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \BZIon\Bundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $bans;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bans = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add bans
+     *
+     * @param \BZIon\Bundle\Entity\Ban $bans
+     * @return Player
+     */
+    public function addBan(\BZIon\Bundle\Entity\Ban $bans)
+    {
+        $this->bans[] = $bans;
+
+        return $this;
+    }
+
+    /**
+     * Remove bans
+     *
+     * @param \BZIon\Bundle\Entity\Ban $bans
+     */
+    public function removeBan(\BZIon\Bundle\Entity\Ban $bans)
+    {
+        $this->bans->removeElement($bans);
+    }
+
+    /**
+     * Get bans
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBans()
+    {
+        return $this->bans;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $discussions;
+
+
+    /**
+     * Add discussions
+     *
+     * @param \BZIon\Bundle\Entity\Discussion $discussions
+     * @return Player
+     */
+    public function addDiscussion(\BZIon\Bundle\Entity\Discussion $discussions)
+    {
+        $this->discussions[] = $discussions;
+
+        return $this;
+    }
+
+    /**
+     * Remove discussions
+     *
+     * @param \BZIon\Bundle\Entity\Discussion $discussions
+     */
+    public function removeDiscussion(\BZIon\Bundle\Entity\Discussion $discussions)
+    {
+        $this->discussions->removeElement($discussions);
+    }
+
+    /**
+     * Get discussions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDiscussions()
+    {
+        return $this->discussions;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $invitationsReceived;
+
+
+    /**
+     * Add invitationsReceived
+     *
+     * @param \BZIon\Bundle\Entity\Invitation $invitationsReceived
+     * @return Player
+     */
+    public function addInvitationsReceived(\BZIon\Bundle\Entity\Invitation $invitationsReceived)
+    {
+        $this->invitationsReceived[] = $invitationsReceived;
+
+        return $this;
+    }
+
+    /**
+     * Remove invitationsReceived
+     *
+     * @param \BZIon\Bundle\Entity\Invitation $invitationsReceived
+     */
+    public function removeInvitationsReceived(\BZIon\Bundle\Entity\Invitation $invitationsReceived)
+    {
+        $this->invitationsReceived->removeElement($invitationsReceived);
+    }
+
+    /**
+     * Get invitationsReceived
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvitationsReceived()
+    {
+        return $this->invitationsReceived;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $messagesSent;
+
+
+    /**
+     * Add messagesSent
+     *
+     * @param \BZIon\Bundle\Entity\Message $messagesSent
+     * @return Player
+     */
+    public function addMessagesSent(\BZIon\Bundle\Entity\Message $messagesSent)
+    {
+        $this->messagesSent[] = $messagesSent;
+
+        return $this;
+    }
+
+    /**
+     * Remove messagesSent
+     *
+     * @param \BZIon\Bundle\Entity\Message $messagesSent
+     */
+    public function removeMessagesSent(\BZIon\Bundle\Entity\Message $messagesSent)
+    {
+        $this->messagesSent->removeElement($messagesSent);
+    }
+
+    /**
+     * Get messagesSent
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMessagesSent()
+    {
+        return $this->messagesSent;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $notifications;
+
+
+    /**
+     * Add notifications
+     *
+     * @param \BZIon\Bundle\Entity\Notification $notifications
+     * @return Player
+     */
+    public function addNotification(\BZIon\Bundle\Entity\Notification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \BZIon\Bundle\Entity\Notification $notifications
+     */
+    public function removeNotification(\BZIon\Bundle\Entity\Notification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $pastCallsigns;
+
+
+    /**
+     * Add pastCallsigns
+     *
+     * @param \BZIon\Bundle\Entity\PastCallsign $pastCallsigns
+     * @return Player
+     */
+    public function addPastCallsign(\BZIon\Bundle\Entity\PastCallsign $pastCallsigns)
+    {
+        $this->pastCallsigns[] = $pastCallsigns;
+
+        return $this;
+    }
+
+    /**
+     * Remove pastCallsigns
+     *
+     * @param \BZIon\Bundle\Entity\PastCallsign $pastCallsigns
+     */
+    public function removePastCallsign(\BZIon\Bundle\Entity\PastCallsign $pastCallsigns)
+    {
+        $this->pastCallsigns->removeElement($pastCallsigns);
+    }
+
+    /**
+     * Get pastCallsigns
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPastCallsigns()
+    {
+        return $this->pastCallsigns;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $roles;
+
+
+    /**
+     * Add roles
+     *
+     * @param \BZIon\Bundle\Entity\Role $roles
+     * @return Player
+     */
+    public function addRole(\BZIon\Bundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \BZIon\Bundle\Entity\Role $roles
+     */
+    public function removeRole(\BZIon\Bundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+    /**
+     * @var \BZIon\Bundle\Entity\Team
+     */
+    private $team;
+
+
+    /**
+     * Set team
+     *
+     * @param \BZIon\Bundle\Entity\Team $team
+     * @return Player
+     */
+    public function setTeam(\BZIon\Bundle\Entity\Team $team = null)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return \BZIon\Bundle\Entity\Team 
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $visits;
+
+
+    /**
+     * Add visits
+     *
+     * @param \BZIon\Bundle\Entity\Visit $visits
+     * @return Player
+     */
+    public function addVisit(\BZIon\Bundle\Entity\Visit $visits)
+    {
+        $this->visits[] = $visits;
+
+        return $this;
+    }
+
+    /**
+     * Remove visits
+     *
+     * @param \BZIon\Bundle\Entity\Visit $visits
+     */
+    public function removeVisit(\BZIon\Bundle\Entity\Visit $visits)
+    {
+        $this->visits->removeElement($visits);
+    }
+
+    /**
+     * Get visits
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
 }

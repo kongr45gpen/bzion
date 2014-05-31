@@ -18,4 +18,17 @@ BZIon\Bundle\Entity\Discussion:
         status:
             type: string
             length: '32'
+    manyToMany:
+        players:
+            targetEntity: Player
+            mappedBy: discussions
+    manyToOne:
+        creator:
+            targetEntity: Player
+            joinColumn:
+                nullable: false
+    oneToMany:
+        messages:
+            targetEntity: Player
+            mappedBy: discussion
     lifecycleCallbacks: {  }

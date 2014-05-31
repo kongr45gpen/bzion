@@ -15,4 +15,11 @@ BZIon\Bundle\Entity\Role:
             type: boolean
         protected:
             type: boolean
+    manyToMany:
+        permissions:
+            targetEntity: Permission
+            inversedBy: roles
+        players:
+            targetEntity: Player
+            mappedBy: roles
     lifecycleCallbacks: {  }

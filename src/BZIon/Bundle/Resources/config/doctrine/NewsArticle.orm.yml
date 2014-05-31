@@ -20,4 +20,25 @@ BZIon\Bundle\Entity\NewsArticle:
         status:
             type: string
             length: '32'
+    manyToOne:
+        author:
+            targetEntity: Player
+            joinColumn:
+                nullable: false
+        editor:
+            targetEntity: Player
+            joinColumn:
+                nullable: false
+        category:
+            targetEntity: NewsCategory
+            inversedBy: articles
+            joinColumn:
+                nullable: false
+        parent:
+            targetEntity: NewsArticle
+            inversedBy: children
+    oneToMany:
+        children:
+            targetEntity: NewsArticle
+            mappedBy: parent
     lifecycleCallbacks: {  }

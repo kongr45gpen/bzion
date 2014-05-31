@@ -40,11 +40,6 @@ class Page
     private $updated;
 
     /**
-     * @var boolean
-     */
-    private $home;
-
-    /**
      * @var string
      */
     private $status;
@@ -53,7 +48,7 @@ class Page
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +71,7 @@ class Page
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -99,7 +94,7 @@ class Page
     /**
      * Get alias
      *
-     * @return string 
+     * @return string
      */
     public function getAlias()
     {
@@ -122,7 +117,7 @@ class Page
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -145,7 +140,7 @@ class Page
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -168,34 +163,11 @@ class Page
     /**
      * Get updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
         return $this->updated;
-    }
-
-    /**
-     * Set home
-     *
-     * @param boolean $home
-     * @return Page
-     */
-    public function setHome($home)
-    {
-        $this->home = $home;
-
-        return $this;
-    }
-
-    /**
-     * Get home
-     *
-     * @return boolean 
-     */
-    public function getHome()
-    {
-        return $this->home;
     }
 
     /**
@@ -214,10 +186,111 @@ class Page
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
         return $this->status;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $children;
+
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $author;
+
+    /**
+     * @var \BZIon\Bundle\Entity\Page
+     */
+    private $parent;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add children
+     *
+     * @param \BZIon\Bundle\Entity\Page $children
+     * @return Page
+     */
+    public function addChild(\BZIon\Bundle\Entity\Page $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \BZIon\Bundle\Entity\Page $children
+     */
+    public function removeChild(\BZIon\Bundle\Entity\Page $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \BZIon\Bundle\Entity\Player $author
+     * @return Page
+     */
+    public function setAuthor(\BZIon\Bundle\Entity\Player $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \BZIon\Bundle\Entity\Player
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \BZIon\Bundle\Entity\Page $parent
+     * @return Page
+     */
+    public function setParent(\BZIon\Bundle\Entity\Page $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \BZIon\Bundle\Entity\Page
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

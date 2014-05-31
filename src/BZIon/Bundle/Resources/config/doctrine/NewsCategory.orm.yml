@@ -21,4 +21,8 @@ BZIon\Bundle\Entity\NewsCategory:
         status:
             type: string
             length: '32'
+    oneToMany:
+        articles:
+            targetEntity: NewsArticle
+            mappedBy: category
     lifecycleCallbacks: {  }

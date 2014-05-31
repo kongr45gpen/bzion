@@ -108,4 +108,88 @@ class Role
     {
         return $this->protected;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $permissions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $players;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->permissions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add permissions
+     *
+     * @param \BZIon\Bundle\Entity\Permission $permissions
+     * @return Role
+     */
+    public function addPermission(\BZIon\Bundle\Entity\Permission $permissions)
+    {
+        $this->permissions[] = $permissions;
+
+        return $this;
+    }
+
+    /**
+     * Remove permissions
+     *
+     * @param \BZIon\Bundle\Entity\Permission $permissions
+     */
+    public function removePermission(\BZIon\Bundle\Entity\Permission $permissions)
+    {
+        $this->permissions->removeElement($permissions);
+    }
+
+    /**
+     * Get permissions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * Add players
+     *
+     * @param \BZIon\Bundle\Entity\Player $players
+     * @return Role
+     */
+    public function addPlayer(\BZIon\Bundle\Entity\Player $players)
+    {
+        $this->players[] = $players;
+
+        return $this;
+    }
+
+    /**
+     * Remove players
+     *
+     * @param \BZIon\Bundle\Entity\Player $players
+     */
+    public function removePlayer(\BZIon\Bundle\Entity\Player $players)
+    {
+        $this->players->removeElement($players);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
 }

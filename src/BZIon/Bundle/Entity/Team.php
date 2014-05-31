@@ -388,4 +388,77 @@ class Team
     {
         return $this->status;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $leader;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $members;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set leader
+     *
+     * @param \BZIon\Bundle\Entity\Player $leader
+     * @return Team
+     */
+    public function setLeader(\BZIon\Bundle\Entity\Player $leader)
+    {
+        $this->leader = $leader;
+
+        return $this;
+    }
+
+    /**
+     * Get leader
+     *
+     * @return \BZIon\Bundle\Entity\Player 
+     */
+    public function getLeader()
+    {
+        return $this->leader;
+    }
+
+    /**
+     * Add members
+     *
+     * @param \BZIon\Bundle\Entity\Player $members
+     * @return Team
+     */
+    public function addMember(\BZIon\Bundle\Entity\Player $members)
+    {
+        $this->members[] = $members;
+
+        return $this;
+    }
+
+    /**
+     * Remove members
+     *
+     * @param \BZIon\Bundle\Entity\Player $members
+     */
+    public function removeMember(\BZIon\Bundle\Entity\Player $members)
+    {
+        $this->members->removeElement($members);
+    }
+
+    /**
+     * Get members
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
 }

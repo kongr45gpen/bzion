@@ -108,4 +108,60 @@ class Message
     {
         return $this->status;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Discussion
+     */
+    private $discussion;
+
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $sender;
+
+
+    /**
+     * Set discussion
+     *
+     * @param \BZIon\Bundle\Entity\Discussion $discussion
+     * @return Message
+     */
+    public function setDiscussion(\BZIon\Bundle\Entity\Discussion $discussion)
+    {
+        $this->discussion = $discussion;
+
+        return $this;
+    }
+
+    /**
+     * Get discussion
+     *
+     * @return \BZIon\Bundle\Entity\Discussion 
+     */
+    public function getDiscussion()
+    {
+        return $this->discussion;
+    }
+
+    /**
+     * Set sender
+     *
+     * @param \BZIon\Bundle\Entity\Player $sender
+     * @return Message
+     */
+    public function setSender(\BZIon\Bundle\Entity\Player $sender)
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * Get sender
+     *
+     * @return \BZIon\Bundle\Entity\Player 
+     */
+    public function getSender()
+    {
+        return $this->sender;
+    }
 }

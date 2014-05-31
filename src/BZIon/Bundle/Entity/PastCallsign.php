@@ -52,4 +52,32 @@ class PastCallsign
     {
         return $this->username;
     }
+    /**
+     * @var \BZIon\Bundle\Entity\Player
+     */
+    private $player;
+
+
+    /**
+     * Set player
+     *
+     * @param \BZIon\Bundle\Entity\Player $player
+     * @return PastCallsign
+     */
+    public function setPlayer(\BZIon\Bundle\Entity\Player $player)
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    /**
+     * Get player
+     *
+     * @return \BZIon\Bundle\Entity\Player 
+     */
+    public function getPlayer()
+    {
+        return $this->player;
+    }
 }

@@ -16,4 +16,15 @@ BZIon\Bundle\Entity\Message:
         status:
             type: string
             length: '32'
+    manyToOne:
+        discussion:
+            targetEntity: Discussion
+            inversedBy: messages
+            joinColumn:
+                nullable: false
+        sender:
+            targetEntity: Player
+            inversedBy: messagesSent
+            joinColumn:
+                nullable: false
     lifecycleCallbacks: {  }

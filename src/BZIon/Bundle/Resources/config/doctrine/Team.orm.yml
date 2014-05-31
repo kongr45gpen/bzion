@@ -44,4 +44,13 @@ BZIon\Bundle\Entity\Team:
         status:
             type: string
             length: '32'
+    oneToMany:
+        members:
+            targetEntity: Player
+            mappedBy: team
+    oneToOne:
+        leader:
+            targetEntity: Player
+            joinColumn:
+                nullable: false
     lifecycleCallbacks: {  }
