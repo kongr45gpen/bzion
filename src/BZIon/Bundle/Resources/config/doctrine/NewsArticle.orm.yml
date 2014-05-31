@@ -1,0 +1,23 @@
+BZIon\Bundle\Entity\NewsArticle:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        subject:
+            type: string
+            length: '100'
+        content:
+            type: text
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

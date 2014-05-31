@@ -1,0 +1,17 @@
+BZIon\Bundle\Entity\Permission:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '50'
+        description:
+            type: string
+            length: '256'
+    lifecycleCallbacks: {  }

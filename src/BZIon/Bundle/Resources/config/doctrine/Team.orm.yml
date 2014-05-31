@@ -1,0 +1,47 @@
+BZIon\Bundle\Entity\Team:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '32'
+        alias:
+            type: string
+            length: '32'
+        descriptionMd:
+            type: text
+            column: description_md
+        descriptionHtml:
+            type: text
+            column: description_html
+        avatar:
+            type: string
+            length: '200'
+        created:
+            type: datetime
+        elo:
+            type: integer
+        activity:
+            type: float
+        matchesWon:
+            type: integer
+            column: matches_won
+        matchesLost:
+            type: integer
+            column: matches_lost
+        matchesDraw:
+            type: integer
+            column: matches_draw
+        memberCount:
+            type: integer
+            column: member_count
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

@@ -47,7 +47,7 @@
 
     "autoload": {
         "classmap" : [ "models/", "controllers/", "src/"],
-        "psr-4"    : { "": "app/" }
+        "psr-4"    : { "": "app/", "BZIon\\": "src/BZIon" }
     },
     "autoload-dev": {
         "classmap": [ "tests/"]

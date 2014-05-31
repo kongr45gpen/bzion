@@ -1,0 +1,28 @@
+BZIon\Bundle\Entity\Page:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '32'
+        alias:
+            type: string
+            length: '32'
+        content:
+            type: text
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        home:
+            type: boolean
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

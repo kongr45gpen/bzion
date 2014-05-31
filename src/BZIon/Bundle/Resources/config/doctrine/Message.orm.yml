@@ -1,0 +1,19 @@
+BZIon\Bundle\Entity\Message:
+    type: entity
+    table: null
+    repositoryClass: BZIon\Bundle\Entity\MessageRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        timestamp:
+            type: datetime
+        message:
+            type: text
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

@@ -1,0 +1,25 @@
+BZIon\Bundle\Entity\Visit:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        ip:
+            type: string
+            length: '46'
+        host:
+            type: string
+            length: '100'
+        userAgent:
+            type: text
+            column: user_agent
+        referer:
+            type: string
+            length: '200'
+        timestamp:
+            type: datetime
+    lifecycleCallbacks: {  }

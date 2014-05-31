@@ -1,0 +1,26 @@
+BZIon\Bundle\Entity\Ban:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        expiration:
+            type: datetime
+        serverMessage:
+            type: string
+            length: '150'
+            column: server_message
+        reason:
+            type: text
+        allowServerJoin:
+            type: boolean
+            column: allow_server_join
+        created:
+            type: datetime
+        updated:
+            type: datetime
+    lifecycleCallbacks: {  }

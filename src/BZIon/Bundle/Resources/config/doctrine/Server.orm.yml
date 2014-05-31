@@ -1,0 +1,24 @@
+BZIon\Bundle\Entity\Server:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '100'
+        address:
+            type: string
+            length: '50'
+        info:
+            type: text
+        updated:
+            type: datetime
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

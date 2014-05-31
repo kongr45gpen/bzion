@@ -1,0 +1,14 @@
+BZIon\Bundle\Entity\PastCallsign:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

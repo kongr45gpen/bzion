@@ -1,0 +1,21 @@
+BZIon\Bundle\Entity\Discussion:
+    type: entity
+    table: null
+    repositoryClass: BZIon\Bundle\Entity\DiscussionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        subject:
+            type: string
+            length: '50'
+        lastActivity:
+            type: datetime
+            column: last_activity
+        status:
+            type: string
+            length: '32'
+    lifecycleCallbacks: {  }

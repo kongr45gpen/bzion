@@ -19,14 +19,17 @@ BZIon\Bundle\Entity\Player:
             type: string
             length: '32'
             unique: yes
+            nullable: yes
         status:
             type: string
             length: '32'
         avatar:
             type: string
             length: '200'
+            nullable: yes
         description:
             type: text
+            nullable: yes
         timezone:
             type: smallint
         joined:
@@ -34,7 +37,9 @@ BZIon\Bundle\Entity\Player:
         lastLogin:
             type: datetime
             column: last_login
+            nullable: yes
         adminNotes:
             type: text
             column: admin_notes
+            nullable: yes
     lifecycleCallbacks: {  }
