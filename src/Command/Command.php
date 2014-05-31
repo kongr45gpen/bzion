@@ -1,6 +1,6 @@
 <?php
 
-namespace BZIon\Command;
+namespace BZIon\Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Process\Process;
 
-class Command extends ContainerAwareCommand
+abstract class Command extends ContainerAwareCommand
 {
     private $progress;
 

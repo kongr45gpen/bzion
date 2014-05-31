@@ -5,6 +5,8 @@
     "license": "LGPL-3.0",
 
     "require": {
+        "doctrine/orm"             : "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle" : "~1.2",
         "ext-gd"                   : "*",
         "ivaynberg/select2"        : "dev-master",
         "michelf/php-markdown"     : ">=1.4.1",
@@ -39,7 +41,8 @@
         "symfony/web-profiler-bundle": ">=2.4.0",
         "phpunit/phpunit": "4.1.*",
         "phpdocumentor/phpdocumentor": "dev-develop",
-        "sensio/distribution-bundle": "3.0.*@dev"
+        "sensio/distribution-bundle": "3.0.*@dev",
+        "sensio/generator-bundle": "~2.3"
     },
 
     "autoload": {

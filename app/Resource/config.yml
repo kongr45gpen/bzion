@@ -8,20 +8,33 @@ framework:
     session:
         handler_id: ~
 
-services:
-    main.warmer.twig_warmer:
-        class: BZIon\Twig\TwigCacheWarmer
-        tags:
-            - { name: kernel.cache_warmer, priority: 0 }
-    bzion.command.install_command:
-        class: BZIon\Command\InstallCommand
-        tags:
-            -  { name: console.command }
-    bzion.command.update_command:
-        class: BZIon\Command\UpdateCommand
-        tags:
-            -  { name: console.command }
-    bzion.command.config_command:
-        class: BZIon\Command\ConfigCommand
-        tags:
-            -  { name: console.command }
+doctrine:
+    dbal:
+        driver:   "pdo_mysql"
+        host:     "%database.host%"
+        dbname:   "%database.name%"
+        user:     "%database.user%"
+        password: "%database.password%"
+    orm:
+        auto_mapping: true
+
+# services:
+#     main.warmer.twig_warmer:
+#         class: BZIon\Twig\TwigCacheWarmer
+#         tags:
+#             - { name: kernel.cache_warmer, priority: 0 }
+#     bzion.command.install_command:
+#         class: BZIon\Command\InstallCommand
+#         tags:
+#             -  { name: console.command }
+#     bzion.command.update_command:
+#         class: BZIon\Command\UpdateCommand
+#         tags:
+#             -  { name: console.command }
+#     bzion.command.config_command:
+#         class: BZIon\Command\ConfigCommand
+#         tags:
+#             -  { name: console.command }
+
+imports:
+    - { resource: constants.php }
