@@ -1,0 +1,24 @@
+BZIon\Bundle\Entity\Notification:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        message:
+            type: text
+        timestamp:
+            type: datetime
+        status:
+            type: string
+            length: '32'
+    manyToOne:
+        receiver:
+            targetEntity: Player
+            mappedBy: notifications
+            joinColumn:
+                nullable: false
+    lifecycleCallbacks: {  }

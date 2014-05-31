@@ -1,0 +1,80 @@
+BZIon\Bundle\Entity\Match:
+    type: entity
+    table: TeamMatch
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        teamAPlayers:
+            type: array
+            column: team_a_players
+            nullable: yes
+        teamBPlayers:
+            type: array
+            column: team_b_players
+            nullable: yes
+        teamAPoints:
+            type: integer
+            column: team_a_points
+        teamBPoints:
+            type: integer
+            column: team_b_points
+        teamAEloNew:
+            type: integer
+            column: team_a_elo_new
+        teamBEloNew:
+            type: integer
+            column: team_b_elo_new
+        mapPlayed:
+            type: string
+            length: '100'
+            column: map_played
+            nullable: yes
+        matchDetails:
+            type: array
+            column: match_details
+            nullable: yes
+        port:
+            type: integer
+            nullable: yes
+        server:
+            type: string
+            length: '100'
+            nullable: yes
+        replayFile:
+            type: string
+            length: '256'
+            column: replay_file
+            nullable: yes
+        eloDiff:
+            type: integer
+            column: elo_diff
+        timestamp:
+            type: datetime
+        updated:
+            type: datetime
+        duration:
+            type: integer
+        status:
+            type: string
+            length: '32'
+    manyToOne:
+        teamA:
+            targetEntity: Team
+            joinColumn:
+                name: team_a_id
+                nullable: false
+        teamB:
+            targetEntity: Team
+            joinColumn:
+                name: team_b_id
+                nullable: false
+        enteredBy:
+            targetEntity: Player
+            joinColumn:
+                name: entered_by_id
+                nullable: false
+    lifecycleCallbacks: {  }

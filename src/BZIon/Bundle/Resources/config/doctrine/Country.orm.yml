@@ -1,0 +1,21 @@
+BZIon\Bundle\Entity\Country:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        iso:
+            type: string
+            length: '2'
+        name:
+            type: string
+            length: '80'
+    oneToMany:
+        players:
+            targetEntity: Player
+            mappedBy: country
+    lifecycleCallbacks: {  }

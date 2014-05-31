@@ -1,0 +1,31 @@
+BZIon\Bundle\Entity\Invitation:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        expiration:
+            type: datetime
+        text:
+            type: text
+    manyToOne:
+        invitedPlayer:
+            targetEntity: Player
+            inversedBy: invitationsReceived
+            joinColumn:
+                name: invited_player_id
+                nullable: false
+        invitingPlayer:
+            targetEntity: Player
+            joinColumn:
+                name: inviting_player_id
+                nullable: false
+        team:
+            targetEntity: Team
+            joinColumn:
+                nullable: true
+    lifecycleCallbacks: {  }
