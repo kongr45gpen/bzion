@@ -1,0 +1,18 @@
+BZIon\Bundle\Entity\Role:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '50'
+        reusable:
+            type: boolean
+        protected:
+            type: boolean
+    lifecycleCallbacks: {  }
