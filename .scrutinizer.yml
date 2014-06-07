@@ -1,17 +1,1 @@
-imports:
-    - php
-    - javascript
 
-tools:
-    external_code_coverage: true
-    php_mess_detector: true
-    php_code_sniffer: true
-    sensiolabs_security_checker: true
-    php_sim: true
-    php_cpd: false
-    js_hint: true
-    php_cs_fixer:
-        config: { level: all }
-
-filter:
-    excluded_paths: [includes/*, vendor/*, tests/*, app/cache/*, bin/*, library/*, hooks/*]

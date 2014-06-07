@@ -1,8 +1,5 @@
 language: php
 php:
-  - 5.3
-  - 5.4
-  - 5.5
   - 5.6
 
 matrix:
@@ -12,7 +9,6 @@ matrix:
             - NO_COVERAGE=1
             - BZION_HHVM=1
     allow_failures:
-        - php: 5.6
         - php: hhvm-nightly
     fast_finish: true
 

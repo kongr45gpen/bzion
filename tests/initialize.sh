@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-COMPOSER_ARGS="--no-interaction"
 if [[ $BZION_HHVM -eq 1 ]]; then
-   COMPOSER_ARGS="-v"
+    composer self-update
+    composer install -v
+else
+    php composer.phar install --no-interaction
 fi
-
-php composer.phar install $COMPOSER_ARGS
 
 FILE=bzion-config.php
 cp bzion-config-example.php $FILE
