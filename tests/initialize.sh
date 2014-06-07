@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 if [[ $BZION_HHVM -eq 1 ]]; then
-    composer self-update
     composer install -v
 else
     php composer.phar install --no-interaction
