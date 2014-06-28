@@ -1,0 +1,5 @@
+fields:
+    server_address:
+        type: text
+    enter:
+        type: submit

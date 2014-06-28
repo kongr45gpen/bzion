@@ -1,0 +1,17 @@
+main {
+    &.page {
+        @extend .clearfix;
+        @extend .wrapper;
+
+        font-family: $sanSerifFont;
+
+        aside {
+            float: left;
+            width: 400px;
+
+            h2 {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
