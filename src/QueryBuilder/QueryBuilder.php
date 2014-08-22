@@ -6,6 +6,10 @@
  * @license    https://github.com/allejo/bzion/blob/master/LICENSE.md GNU General Public License Version 3
  */
 
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * This class can be used to search for models with specific characteristics in
  * the database.
@@ -30,6 +34,12 @@ class QueryBuilder implements Countable
      * @var string
      */
     protected $type;
+
+    /**
+     * The options provided in __construct()
+     * @var array
+     */
+    protected $options = array();
 
     /**
      * The columns that the model provided us
@@ -72,18 +82,6 @@ class QueryBuilder implements Countable
      * @var string|null
      */
     private $currentColumn = null;
-
-    /**
-     * Statuses to consider active
-     * @var string[]|null
-     */
-    private $activeStatuses = null;
-
-    /**
-     * A column to consider the name of the model
-     * @var string|null
-     */
-    private $nameColumn = null;
 
     /**
      * Whether to return the results as arrays instead of models
@@ -129,20 +127,15 @@ class QueryBuilder implements Countable
      * @param string $type    The type of the Model (e.g. "Player" or "Match")
      * @param array  $options The options to pass to the builder (see above)
      */
-    public function __construct($type, $options=array())
+    public function __construct($type, array $options = array())
     {
         $this->type = $type;
 
-        if (isset($options['activeStatuses'])) {
-            $this->activeStatuses = $options['activeStatuses'];
-            $this->columns['status'] = 'status';
-        }
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
 
-        if (isset($options['columns']))
-            $this->columns += $options['columns'];
-
-        if (isset($options['name']))
-            $this->nameColumn = $options['name'];
+        $this->options = $resolver->resolve($options);
+        $this->columns = $this->options['columns'];
     }
 
     /**
@@ -350,11 +343,11 @@ class QueryBuilder implements Countable
      */
     public function active()
     {
-        if (!$this->activeStatuses) {
+        if (!$this->options['activeStatuses']) {
             return $this;
         }
 
-        return $this->where('status')->isOneOf($this->activeStatuses);
+        return $this->where('status')->isOneOf($this->options['activeStatuses']);
     }
 
     /**
@@ -364,17 +357,17 @@ class QueryBuilder implements Countable
      */
     public function getNames()
     {
-        if (!$this->nameColumn)
+        if (!$this->options['name'])
             throw new Exception("You haven't specified a name column");
 
         $db = Database::getInstance();
-        $columns = array($this->nameColumn);
+        $columns = array($this->options['name']);
 
         $results = $db->query($this->createQuery($columns), $this->types, $this->parameters);
 
         $return = array();
         foreach ($results as $r)
-            $return[$r['id']] = $r[$this->nameColumn];
+            $return[$r['id']] = $r[$this->options['name']];
 
         return $return;
     }
@@ -430,6 +423,33 @@ class QueryBuilder implements Countable
         $results = $db->query($query, $this->types, $this->parameters);
 
         return $results[0]['COUNT(*)'];
+    }
+
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'activeStatuses' => null,
+            'name' => null,
+            'columns' => array()
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'activeStatuses' => array('null', 'array'),
+            'columns' => 'array'
+        ));
+
+        $resolver->setNormalizers(array(
+            'columns' => function (Options $options, $value) {
+                // Add columns always present in models
+                $value['id'] = 'id';
+
+                if ($options['activeStatuses']) {
+                    $value['status'] = 'status';
+                }
+
+                return $value;
+            },
+        ));
     }
 
     /**

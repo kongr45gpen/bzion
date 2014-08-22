@@ -19,6 +19,13 @@ if (ENABLE_WEBSOCKET) {
     Service::getContainer()->set('session', $session);
 }
 
+
 $response = $kernel->handle($request);
+new QueryBuilder('Player', array(
+    'columns' => array('toast' => 5),
+    'activeStatuses' => array('active', 'toasted')
+));
+
+
 $response->send();
 $kernel->terminate($request, $response);
