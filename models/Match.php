@@ -528,7 +528,7 @@ class Match extends Model implements PermissionModel
         $team_a->changeElo($diff);
         $team_b->changeElo(-$diff);
 
-        $match = self::create(array(
+        $match = static::create(array(
             'team_a' => $a,
             'team_b' => $b,
             'team_a_points' => $a_points,
