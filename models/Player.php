@@ -607,7 +607,7 @@ class Player extends IdenticonModel implements NamedModel
         $last_login = TimeDate::from($last_login);
         $timezone = ($timezone) ?: date_default_timezone_get();
 
-        $player = self::create(array(
+        $player = static::create(array(
             'bzid' => $bzid,
             'team' => $team,
             'username' => $username,
