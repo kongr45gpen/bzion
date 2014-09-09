@@ -216,7 +216,7 @@ class Match extends PermissionModel implements NamedModel
      */
     public function getOpponentScore($teamID)
     {
-        return getScore($teamID); ///??????
+        return $this->getScore($this->getOpponent($teamID)); ///??????
     }
 
     /**
@@ -228,6 +228,11 @@ class Match extends PermissionModel implements NamedModel
      */
     public function getOpponent($teamID)
     {
+        if ($teamID instanceof Team) {
+            // Oh no! The caller gave us a Team model instead of an ID!
+            $teamID = $teamID->getId();
+        }
+
         if ($this->getTeamA()->getId() == $teamID) {
             return $this->getTeamB();
         }
