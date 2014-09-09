@@ -216,15 +216,7 @@ class Match extends PermissionModel implements NamedModel
      */
     public function getOpponentScore($teamID)
     {
-        if ($teamID instanceof Team) {
-            $teamID = $teamID->getId();
-        }
-
-        if ($this->getTeamA()->getId() != $teamID) {
-            return $this->getTeamAPoints();
-        }
-
-        return $this->getTeamBPoints();
+        return getScore($teamID); ///??????
     }
 
     /**
