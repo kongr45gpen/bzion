@@ -107,7 +107,7 @@ class Player extends IdenticonModel implements NamedModel
 
     /**
      * The permissions a player has
-     * @var Permission[]
+     * @var array
      */
     protected $permissions;
 
@@ -150,6 +150,10 @@ class Player extends IdenticonModel implements NamedModel
 
         $this->roles = Role::getRoles($this->id);
         $this->permissions = array();
+
+        foreach ($this->roles as $role) {
+            $this->permissions = array_merge($this->permissions, $role->getPerms());
+        }
     }
 
     /**
