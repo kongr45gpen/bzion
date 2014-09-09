@@ -10,7 +10,7 @@
  * A news article
  * @package    BZiON\Models
  */
-class News extends UrlModel implements NamedModel, PermissionModel
+class News extends UrlModel implements NamedModel
 {
     /**
      * The category of the article
@@ -181,15 +181,6 @@ class News extends UrlModel implements NamedModel, PermissionModel
     }
 
     /**
-     * Get the status of the post
-     * @return string The string representation of the post's status
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Get the subject of the news article
      * @return string
      */
@@ -288,6 +279,14 @@ class News extends UrlModel implements NamedModel, PermissionModel
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getActiveStatuses()
+    {
+        return array('published', 'revision');
+    }
+
+    /**
      * Add a new news article
      *
      * @param string $subject    The subject of the article
@@ -341,6 +340,23 @@ class News extends UrlModel implements NamedModel, PermissionModel
                 "ORDER BY created DESC LIMIT $limit OFFSET $start"
             )
         );
+    }
+
+    /**
+     * Get a query builder for news
+     * @return QueryBuilder
+     */
+    public static function getQueryBuilder()
+    {
+        return new QueryBuilder('News', array(
+            'columns' => array(
+                'subject'  => 'subject',
+                'category' => 'category',
+                'created'  => 'created',
+                'status'   => 'status'
+            ),
+            'name' => 'subject'
+        ));
     }
 
     public static function getCreatePermission() { return Permission::CREATE_NEWS; }

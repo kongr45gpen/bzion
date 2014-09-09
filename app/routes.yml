@@ -6,6 +6,10 @@ admin_list:
     pattern:    /admins
     defaults: { _controller: 'Admin', _action: 'list' }
 
+admin_wipe:
+    pattern:    /admin/deleted
+    defaults: { _controller: 'Admin', _action: 'wipe' }
+
 api_leagueoverseer:
     pattern:    /api/leagueOverseer
     defaults: { _controller: 'LeagueOverseerHook', _action: 'query' }
@@ -125,6 +129,10 @@ profile_show:
 profile_edit:
     pattern:    /profile/edit
     defaults: { _controller: 'Profile', _action: 'edit' }
+
+profile_confirm:
+    pattern:    /profile/confirm/{token}
+    defaults: { _controller: 'Profile', _action: 'confirm' }
 
 server_list:
     pattern:    /servers

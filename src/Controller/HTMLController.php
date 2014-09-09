@@ -63,9 +63,14 @@ abstract class HTMLController extends Controller
     {
         $model = parent::findModelInParameters($modelParameter, $routeParameters);
 
-        if (!$model instanceof Model || !$model->isDeleted())
+        if (!$model instanceof Model || $modelParameter->getName() === "me") {
+            // `$me` can be invalid if, for example, no user is currently logged
+            // in - in this case we can just pass the invalid Player model to
+            // the controller without complaining
             return $model;
-        elseif ($modelParameter->getName() !== "me") {
+        } elseif (!$this->canSee($model)) {
+            // If the model is not supposed to be visible to the player
+            // requesting it, pretend it's not there
             throw new ModelNotFoundException($model->getTypeForHumans());
         }
 
@@ -192,6 +197,25 @@ abstract class HTMLController extends Controller
     public static function getFlashBag()
     {
         return self::getRequest()->getSession()->getFlashBag();
+    }
+
+    /**
+     * Find out whether the currently logged in user can see a model
+     *
+     * Apart from the permissions of the user, this method takes the request
+     * query into consideration to find out if the user wants to see deleted
+     * models or not.
+     *
+     * @param  Model The Model in question
+     * @return boolean
+     */
+    public static function canSee($model)
+    {
+        if (!$model instanceof PermissionModel) {
+            return !$model->isDeleted();
+        }
+
+        return static::getMe()->canSee($model, static::getRequest()->get('showDeleted'));
     }
 
     /**

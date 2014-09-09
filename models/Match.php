@@ -10,7 +10,7 @@
  * A match played between two teams
  * @package    BZiON\Models
  */
-class Match extends Model implements PermissionModel
+class Match extends PermissionModel implements NamedModel
 {
 
     /**
@@ -105,7 +105,7 @@ class Match extends Model implements PermissionModel
 
     /**
      * The timestamp representing when the match information was last updated
-     * @var string
+     * @var TimeDate
      */
     protected $updated;
 
@@ -570,7 +570,7 @@ class Match extends Model implements PermissionModel
     {
         $prob = 1.0 / (1 + pow(10, (($b_elo-$a_elo)/400.0)));
         if ($a_points > $b_points) {
-           $diff = 50*(1-$prob);
+            $diff = 50*(1-$prob);
         } elseif ($a_points == $b_points) {
             $diff = 50*(0.5-$prob);
         } else {
@@ -610,9 +610,9 @@ class Match extends Model implements PermissionModel
                 'secondTeam' => 'team_b',
                 'firstTeamPoints' => 'team_a_points',
                 'secondTeamPoints' => 'team_b_points',
-                'time' => 'timestamp'
+                'time' => 'timestamp',
+                'status' => 'status'
             ),
-            'activeStatuses' => array('entered'),
         ));
     }
 
@@ -625,6 +625,28 @@ class Match extends Model implements PermissionModel
         $this->resetELOs();
 
         return parent::delete();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getActiveStatuses()
+    {
+        return array('entered');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return sprintf("(+/- %d) %s [%d] vs [%d] %s",
+            $this->getEloDiff(),
+            $this->getWinner()->getName(),
+            $this->getScore($this->getWinner()),
+            $this->getScore($this->getLoser()),
+            $this->getLoser()->getName()
+        );
     }
 
     /**

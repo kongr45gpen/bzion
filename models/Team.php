@@ -10,7 +10,7 @@
  * A league team
  * @package    BZiON\Models
  */
-class Team extends IdenticonModel implements PermissionModel
+class Team extends IdenticonModel
 {
     /**
      * The description of the team written in markdown
@@ -421,16 +421,6 @@ class Team extends IdenticonModel implements PermissionModel
     }
 
     /**
-     * Get the team's status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Get the rank category a team belongs too based on their ELO
      *
      * This value is always a multiple of 100 and less than or equal to 2000
@@ -623,19 +613,6 @@ class Team extends IdenticonModel implements PermissionModel
     }
 
     /**
-     * Get an array with all the team IDs and names
-     *
-     * @return array
-     */
-    public static function getTeamNames()
-    {
-        return self::fetchIdsFrom(
-            "status", array("disabled", "deleted"),
-            "s", true, "ORDER BY name", "", "id, name"
-        );
-    }
-
-    /**
      * Get a single team by its name
      *
      * @param  string $name The team name to look for
@@ -647,6 +624,14 @@ class Team extends IdenticonModel implements PermissionModel
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getActiveStatuses()
+    {
+        return array('open', 'closed');
+    }
+
+    /**
      * Get a query builder for teams
      * @return QueryBuilder
      */
@@ -654,9 +639,9 @@ class Team extends IdenticonModel implements PermissionModel
     {
         return new QueryBuilder('Team', array(
             'columns' => array(
-                'name' => 'name',
+                'name'   => 'name',
+                'status' => 'status'
             ),
-            'activeStatuses' => array('open', 'closed'),
             'name' => 'name',
         ));
     }
@@ -665,4 +650,12 @@ class Team extends IdenticonModel implements PermissionModel
     public static function getEditPermission() { return Permission::EDIT_TEAM;  }
     public static function getSoftDeletePermission() { return Permission::SOFT_DELETE_TEAM; }
     public static function getHardDeletePermission() { return Permission::HARD_DELETE_TEAM; }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function isEditor($player)
+    {
+        return $player->getId() == $this->getLeader()->getId();
+    }
 }

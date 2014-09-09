@@ -286,9 +286,27 @@ abstract class Controller
      * Returns the name of the controller without the "Controller" part
      * @return string
      */
-    public function getName()
+    public static function getName()
     {
         return preg_replace('/Controller$/', '', get_called_class());
+    }
+
+    /**
+     * Returns a configured QueryBuilder for the corresponding model
+     *
+     * The returned QueryBuilder will only show models visible to the currently
+     * logged in user
+     *
+     * @param  string|null The model whose query builder we should get (null
+     *                     to get the builder of the controller's model)
+     * @return QueryBuilder
+     */
+    public static function getQueryBuilder($type = null)
+    {
+        $type = ($type) ?: static::getName();
+
+        return $type::getQueryBuilder()
+            ->visibleTo(static::getMe(), static::getRequest()->get('showDeleted'));
     }
 
     /**
@@ -316,7 +334,7 @@ abstract class Controller
      * Gets the currently logged in player
      * @return Player
      */
-    protected static function getMe()
+    public static function getMe()
     {
         return new Player(self::getRequest()->getSession()->get('playerId'));
     }
@@ -356,7 +374,6 @@ abstract class Controller
         Debug::startStopwatch('view.render');
 
         $template = Service::getTemplateEngine();
-
         $ret = $template->render($view, $parameters);
 
         Debug::finishStopwatch('view.render');

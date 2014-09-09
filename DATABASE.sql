@@ -34,6 +34,7 @@ CREATE TABLE `bans` (
   `created` datetime NOT NULL COMMENT 'The timestamp this ban was created',
   `updated` datetime NOT NULL COMMENT 'The timestamp of the last update for this ban',
   `author` int(10) unsigned NOT NULL COMMENT 'The person who issued the ban',
+  `status` set('public','hidden','deleted') NOT NULL DEFAULT 'public' COMMENT 'The status of the ban',
   PRIMARY KEY (`id`),
   KEY `author` (`author`),
   KEY `player` (`player`),
@@ -438,7 +439,7 @@ LOCK TABLES `news_categories` WRITE;
 
 INSERT INTO `news_categories` (`id`, `alias`, `name`, `protected`, `status`)
 VALUES
-  (1,'uncategorized','Uncategorized',1,'live');
+  (1,'uncategorized','Uncategorized',1,'enabled');
 
 /*!40000 ALTER TABLE `news_categories` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -447,15 +448,15 @@ UNLOCK TABLES;
 # Dump of table notifications
 # ------------------------------------------------------------
 CREATE TABLE `notifications` (
-    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `receiver` int(10) unsigned NOT NULL COMMENT 'The ID of the player who received the notification',
-    `type` set('text', 'team_invite', 'team_deleted', 'team_leader', 'team_kicked', 'team_join', 'team_abandon') NOT NULL COMMENT 'The type of the notification',
-    `data` text NOT NULL COMMENT 'The serialized data of the notification',
-    `timestamp` datetime NOT NULL COMMENT 'The timestamp when the notification was send',
-    `status` set('unread','read','deleted') NOT NULL DEFAULT 'unread' COMMENT 'The status of the notification',
-    PRIMARY KEY (`id`),
-    KEY `receiver` (`receiver`),
-    CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`receiver`) REFERENCES `players` (`id`)
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `receiver` int(10) unsigned NOT NULL COMMENT 'The ID of the player who received the notification',
+  `type` set('text', 'team_invite', 'team_deleted', 'team_leader', 'team_kicked', 'team_join', 'team_abandon') NOT NULL COMMENT 'The type of the notification',
+  `data` text NOT NULL COMMENT 'The serialized data of the notification',
+  `timestamp` datetime NOT NULL COMMENT 'The timestamp when the notification was send',
+  `status` set('unread','read','deleted') NOT NULL DEFAULT 'unread' COMMENT 'The status of the notification',
+  PRIMARY KEY (`id`),
+  KEY `receiver` (`receiver`),
+  CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`receiver`) REFERENCES `players` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -596,6 +597,9 @@ CREATE TABLE `players` (
   `alias` varchar(32) DEFAULT NULL COMMENT 'The player''s URL slug that will appear when viewing their profile',
   `status` set('active','disabled','deleted','reported','banned','test') NOT NULL DEFAULT 'active' COMMENT 'The player''s status',
   `avatar` varchar(200) NOT NULL DEFAULT '' COMMENT 'The URL to the player''s avatar',
+  `email` varchar(255) DEFAULT NULL COMMENT 'The player''s e-mail address',
+  `verified` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Whether the player''s e-mail address has been verified',
+  `confirm_code` varchar(32) DEFAULT NULL COMMENT 'A confirmation code used to verify the player''s email address',
   `description` text NOT NULL COMMENT 'The description or biography of a player',
   `country` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'The country a player belongs to',
   `timezone` varchar(40) NOT NULL COMMENT 'The PHP identifier of the timezone a player belongs to',

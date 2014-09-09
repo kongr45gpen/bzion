@@ -1,5 +1,6 @@
 <?php
 
+use BZIon\Form\Creator\ModelFormCreator;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -10,17 +11,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 abstract class CRUDController extends JSONController
 {
-    /**
-     * Enter the data of a valid form into the database
-     * @param  Form   $form    The submitted form
-     * @param  Player $creator The player who enters the data
-     * @return Model
-     */
-    protected function enter($form, $creator)
-    {
-        throw new Exception("You need to specify an enter() method");
-    }
-
     /**
      * Make sure that the data of a form is valid, only called when creating a
      * new object
@@ -41,18 +31,6 @@ abstract class CRUDController extends JSONController
     }
 
     /**
-     * Update a model in the database
-     * @param  Form   $form  The form that will be used to update the model
-     * @param  Model  $model The model that will be updated
-     * @param  Player $me    The player that wants to edit the model
-     * @return Model  The updated model
-     */
-    protected function update($form, $model, $me)
-    {
-        throw new Exception("You need to implement an update() method");
-    }
-
-    /**
      * Delete a model
      * @throws ForbiddenException
      * @param  PermissionModel    $model     The model we want to delete
@@ -62,28 +40,44 @@ abstract class CRUDController extends JSONController
      */
     protected function delete(PermissionModel $model, Player $me, $onSuccess = null)
     {
-        if (!$this->canDelete($me, $model))
-            throw new ForbiddenException($this->getMessage($model, 'softDelete', 'forbidden'));
+        if ($model->isDeleted()) {
+            // We will have to hard delete the model
+            $hard = true;
+            $message = 'hardDelete';
+            $action = 'Erase forever';
+        } else {
+            $hard = false;
+            $message = 'softDelete';
+            $action = 'Delete';
+        }
 
-        $session        = $this->getRequest()->getSession();
-        $successMessage = $this->getMessage($model, 'softDelete', 'success');
+        if (!$this->canDelete($me, $model, $hard))
+            throw new ForbiddenException($this->getMessage($model, $message, 'forbidden'));
+
+        $successMessage = $this->getMessage($model, $message, 'success');
         $redirection    = $this->redirectToList($model);
 
-        return $this->showConfirmationForm(function () use (&$model, &$session, $redirection, $onSuccess) {
-            $model->delete();
+        return $this->showConfirmationForm(function () use ($model, $hard, $redirection, $onSuccess) {
+            if ($hard) {
+                $model->wipe();
+            } else {
+                $model->delete();
+            }
 
             if ($onSuccess) {
                 $onSuccess();
             }
 
             return $redirection;
-        }, $this->getMessage($model, 'softDelete', 'confirm'), $successMessage, "Delete");
+        }, $this->getMessage($model, $message, 'confirm'), $successMessage, $action);
     }
 
     /**
      * Create a model
      *
-     * This method requires that you have implemented createForm() and enter()
+     * This method requires that you have implemented enter() and a form creator
+     * for the model
+     *
      * @throws ForbiddenException
      * @param  Player $me   The user who wants to create the model
      * @param  string $type The type of the model being created
@@ -94,14 +88,14 @@ abstract class CRUDController extends JSONController
         if (!$this->canCreate($me))
             throw new ForbiddenException($this->getMessage($this->getName(), 'create', 'forbidden'));
 
-        $form = $this->getForm();
-        $form->handleRequest($this->getRequest());
+        $creator = $this->getFormCreator();
+        $form = $creator->create()->handleRequest($this->getRequest());
 
         if ($form->isSubmitted()) {
             $this->validate($form);
             $this->validateNew($form);
             if ($form->isValid()) {
-                $model = $this->enter($form, $me);
+                $model = $creator->enter($form);
                 $this->getFlashBag()->add("success",
                     $this->getMessage($model, 'create', 'success'));
 
@@ -115,7 +109,9 @@ abstract class CRUDController extends JSONController
     /**
      * Edit a model
      *
-     * This method requires that you have implemented createForm() and update()
+     * This method requires that you have implemented update() and a form creator
+     * for the model
+     *
      * @throws ForbiddenException
      * @param  PermissionModel    $model The model we want to edit
      * @param  Player             $me    The user who wants to edit the model
@@ -127,13 +123,13 @@ abstract class CRUDController extends JSONController
         if (!$this->canEdit($me, $model))
             throw new ForbiddenException($this->getMessage($model, 'edit', 'forbidden'));
 
-        $form = $this->getForm($model);
-        $form->handleRequest($this->getRequest());
+        $creator = $this->getFormCreator($model);
+        $form = $creator->create()->handleRequest($this->getRequest());
 
         if ($form->isSubmitted()) {
             $this->validate($form);
             if ($form->isValid()) {
-                $model = $this->update($form, $model, $me);
+                $creator->update($form, $model);
                 $this->getFlashBag()->add("success",
                     $this->getMessage($model, 'edit', 'success'));
 
@@ -147,13 +143,14 @@ abstract class CRUDController extends JSONController
     /**
      * Find whether a player can delete a model
      *
-     * @param  Player          $player The player who wants to delete the model
+     * @param  Player $player The player who wants to delete the model
      * @param  PermissionModel $model  The model that will be deleted
+     * @param  boolean $hard Whether to hard-delete the model instead of soft-deleting it
      * @return boolean
      */
-    protected function canDelete($player, $model)
+    protected function canDelete($player, $model, $hard=false)
     {
-        return $player->canDelete($model);
+        return $player->canDelete($model, $hard);
     }
 
     /**
@@ -217,17 +214,17 @@ abstract class CRUDController extends JSONController
      * Dynamically get the form to show to the user
      *
      * @param  \Model|null $model The model being edited, `null` if we're creating one
-     * @return Form
+     * @return ModelFormCreator
      */
-    private function getForm($model=null)
+    private function getFormCreator($model=null)
     {
         $type = ($model instanceof Model) ? $model->getType() : $this->getName();
         $type = ucfirst($type);
 
         $creatorClass = "\\BZIon\\Form\\Creator\\{$type}FormCreator";
-        $creator = new $creatorClass($model);
+        $creator = new $creatorClass($model, $this->getMe(), $this);
 
-        return $creator->create();
+        return $creator;
     }
 
     /**
@@ -269,9 +266,32 @@ abstract class CRUDController extends JSONController
      * @param  string $name The name of the model
      * @return array
      */
-    private function getMessages($type, $name='')
+    protected function getMessages($type, $name='')
     {
         return array(
+            'hardDelete' => array(
+                'confirm' => array(
+                    'named'   => <<<"WARNING"
+Are you sure you want to wipe <strong>$name</strong>?<br />
+<strong><em>DANGER</em></strong>: This action will <strong>permanently</strong>
+erase the $type from the database, including any objects directly related to it!
+WARNING
+                ,
+                    'unnamed' => <<<"WARNING"
+Are you sure you want to wipe this $type?<br />
+<strong><em>DANGER</em></strong>: This action will <strong>permanently</strong>
+erase the $type from the database, including any objects directly related to it!
+WARNING
+                ),
+                'forbidden' => array(
+                    'named'   => "You are not allowed to delete the $type $name",
+                    'unnamed' => "You are not allowed to delete this $type",
+                ),
+                'success' => array(
+                    'named'   => "The $type $name was permanently erased from the database",
+                    'unnamed' => "The $type has been permanently erased from the database",
+                ),
+            ),
             'softDelete' => array(
                 'confirm' => array(
                     'named'   => "Are you sure you want to delete <strong>$name</strong>?",

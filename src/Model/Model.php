@@ -29,13 +29,45 @@ abstract class Model extends CachedModel
      */
     public function isDeleted()
     {
-        if (!$this->isValid())
+        if (!$this->isValid() || $this->getStatus() == 'deleted')
             return true;
 
-        if (!isset($this->status))
-            return false;
+        return false;
+    }
 
-        return ($this->status == "deleted");
+    /**
+     * Find if the model is active (i.e. visible to everyone)
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return in_array($this->getStatus(), $this->getActiveStatuses());
+    }
+
+
+    /**
+     * Get the models's status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        if (!isset($this->status)) {
+            return 'active';
+        }
+
+        return $this->status;
+    }
+
+    /**
+     * Get the possible statuses representing an active model (visible to everyone)
+     *
+     * @return string[]
+     */
+    public static function getActiveStatuses()
+    {
+        return array('active');
     }
 
     /**
@@ -107,7 +139,7 @@ abstract class Model extends CachedModel
         $ret = $matches[0];
 
         foreach ($ret as &$match) {
-            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+            $match = ($match == strtoupper($match)) ? strtolower($match) : lcfirst($match);
         }
 
         return implode('_', $ret);

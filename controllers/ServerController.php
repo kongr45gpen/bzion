@@ -6,7 +6,7 @@ class ServerController extends CRUDController
 {
     public function listAction()
     {
-        $servers = Server::getServers();
+        $servers = $this->getQueryBuilder()->getModels();
 
         return array("servers" => $servers);
     }
@@ -37,25 +37,5 @@ class ServerController extends CRUDController
     public function editAction(Player $me, Server $server)
     {
         return $this->edit($server, $me, "server");
-    }
-
-    protected function update($form, $server, $me)
-    {
-        $server->setName($form->get('name')->getData())
-               ->setAddress($form->get('address')->getData())
-               ->setOwner($form->get('owner')->getData()->getId())
-               ->forceUpdate();
-
-        return $server;
-    }
-
-    protected function enter($form, $me)
-    {
-        return Server::addServer(
-            $form->get('name')->getData(),
-            $form->get('address')->getData(),
-            1,
-            $form->get('owner')->getData()->getId()
-        );
     }
 }

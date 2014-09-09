@@ -12,7 +12,7 @@ include_once(DOC_ROOT . "/includes/bzfquery.php");
  * A BZFlag server
  * @package    BZiON\Models
  */
-class Server extends UrlModel implements PermissionModel
+class Server extends UrlModel implements NamedModel
 {
 
     /**
@@ -80,6 +80,7 @@ class Server extends UrlModel implements PermissionModel
         $this->online = $server['online'];
         $this->info = unserialize($server['info']);
         $this->updated = new TimeDate($server['updated']);
+        $this->status = $server['status'];
     }
 
     /**
@@ -299,6 +300,21 @@ class Server extends UrlModel implements PermissionModel
     public static function getServers()
     {
         return self::arrayIdToModel(self::fetchIdsFrom("status", array("active"), "s", false, "ORDER BY name"));
+    }
+
+    /**
+     * Get a query builder for servers
+     * @return QueryBuilder
+     */
+    public static function getQueryBuilder()
+    {
+        return new QueryBuilder('Server', array(
+            'columns' => array(
+                'name' => 'name',
+                'status' => 'status'
+            ),
+            'name' => 'name'
+        ));
     }
 
     public static function getCreatePermission() { return Permission::EDIT_SERVER; }

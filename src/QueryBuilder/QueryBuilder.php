@@ -74,12 +74,6 @@ class QueryBuilder implements Countable
     private $currentColumn = null;
 
     /**
-     * Statuses to consider active
-     * @var string[]|null
-     */
-    private $activeStatuses = null;
-
-    /**
      * A column to consider the name of the model
      * @var string|null
      */
@@ -133,11 +127,6 @@ class QueryBuilder implements Countable
     {
         $this->type = $type;
 
-        if (isset($options['activeStatuses'])) {
-            $this->activeStatuses = $options['activeStatuses'];
-            $this->columns['status'] = 'status';
-        }
-
         if (isset($options['columns']))
             $this->columns += $options['columns'];
 
@@ -156,7 +145,7 @@ class QueryBuilder implements Countable
     public function where($column)
     {
         if (!isset($this->columns[$column]))
-            throw new Exception("Unknown column");
+            throw new InvalidArgumentException("Unknown column '$column'");
 
         $this->currentColumn = $this->columns[$column];
 
@@ -177,16 +166,36 @@ class QueryBuilder implements Countable
     }
 
     /**
+     * Request that a column doesNOT equals a string (case-insensitive)
+     *
+     * @param  string $string The string that the column's value should equal to
+     * @return self
+     */
+    public function notEquals($string)
+    {
+        $this->addColumnCondition("!= ?", $string, 's');
+
+        return $this;
+    }
+
+
+    /**
      * Request that a column equals a number
      *
-     * @param  int|Model $number The number that the column's value should equal
-     *                           to - if a Model is provided, use the model's ID
+     * @param  int|Model|null $number The number that the column's value should
+     *                                equal to. If a Model is provided, use the
+     *                                model's ID, while null values are ignored.
      * @return self
      */
     public function is($number)
     {
-        if ($number instanceof Model)
+        if ($number === null) {
+            return $this;
+        }
+
+        if ($number instanceof Model) {
             $number = $number->getId();
+        }
 
         $this->addColumnCondition("= ?", $number, 'i');
 
@@ -350,11 +359,41 @@ class QueryBuilder implements Countable
      */
     public function active()
     {
-        if (!$this->activeStatuses) {
+        if (!isset($this->columns['status'])) {
             return $this;
         }
 
-        return $this->where('status')->isOneOf($this->activeStatuses);
+        $type = $this->type;
+
+        return $this->where('status')->isOneOf($type::getActiveStatuses());
+    }
+
+    /**
+     * Make sure that Models invisible to a player are not returned
+     *
+     * Note that this method does not take PermissionModel::canBeSeenBy() into
+     * consideration for performance purposes, so you will have to override this
+     * in your query builder if necessary.
+     *
+     * @param  Player  $player The player in question
+     * @param  boolean $showDeleted false to hide deleted models even from admins
+     * @return self
+     */
+    public function visibleTo($player, $showDeleted = false)
+    {
+        $type = $this->type;
+
+        if (is_subclass_of($type, "PermissionModel")
+         && $player->hasPermission($type::getEditPermission())) {
+            // The player is an admin who can see hidden models
+            if ($showDeleted) {
+                return $this;
+            } else {
+                return $this->where('status')->notEquals('deleted');
+            }
+        } else {
+            return $this->active();
+        }
     }
 
     /**

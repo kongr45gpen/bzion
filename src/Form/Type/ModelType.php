@@ -2,6 +2,7 @@
 namespace BZIon\Form\Type;
 
 use BZIon\Form\Transformer\ModelTransformer;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -68,7 +69,7 @@ class ModelType extends AbstractType
     private function getAll()
     {
         $type     = $this->type;
-        $query    = $type::getQueryBuilder()->active();
+        $query    = \Controller::getQueryBuilder($this->type);
         $modifier = $this->modifier;
 
         if ($modifier) {
@@ -82,7 +83,7 @@ class ModelType extends AbstractType
     {
         $type = $this->type;
 
-        return strtolower($type::getTypeForHumans());
+        return Inflector::tableize(Inflector::classify($type::getTypeForHumans()));
     }
 
     public function getParent()

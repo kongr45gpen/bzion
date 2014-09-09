@@ -7,7 +7,7 @@ class MatchController extends CRUDController
 {
     public function listAction(Request $request, Team $team=null, $type=null)
     {
-        $query = Match::getQueryBuilder()->active()
+        $query = $this->getQueryBuilder()
                ->sortBy('time')->reverse()
                ->with($team, $type)
                ->limit(50)->fromPage($request->query->get('page', 1));
@@ -30,46 +30,23 @@ class MatchController extends CRUDController
         return $this->delete($match, $me);
     }
 
-    protected function enter($form, $me)
+    /**
+     * {@inheritDoc}
+     */
+    protected function getMessages($type, $name='')
     {
-        $firstTeam  = $form->get('first_team');
-        $secondTeam = $form->get('second_team');
+        $messages = parent::getMessages($type, $name);
 
-        $firstPlayers  = array_map($this->getModelToID(),  $firstTeam->get('participants')->getData());
-        $secondPlayers = array_map($this->getModelToID(), $secondTeam->get('participants')->getData());
-
-        $serverInfo = explode(':', $form->get('server_address')->getData());
-        if (!isset($serverInfo[1])) {
-            $serverInfo[1] = 5154;
+        // Don't show the match info on the successful create/edit message
+        foreach($messages as &$action) {
+            foreach ($action as &$status) {
+                if (isset($status['named'])) {
+                    $status['named'] = $status['unnamed'];
+                }
+            }
         }
 
-        $match = Match::enterMatch(
-            $firstTeam ->get('team')->getData()->getId(),
-            $secondTeam->get('team')->getData()->getId(),
-            $firstTeam ->get('score')->getData(),
-            $secondTeam->get('score')->getData(),
-            $form->get('duration')->getData(),
-            $me->getId(),
-            $form->get('time')->getData(),
-            $firstPlayers,
-            $secondPlayers,
-            $serverInfo[0],
-            $serverInfo[1]
-        );
-
-        return $match;
-    }
-
-    /**
-     * Get a function which converts models to their IDs
-     *
-     * Useful to store the match players into the database
-     */
-    private static function getModelToID()
-    {
-        return function ($model) {
-            return $model->getId();
-        };
+        return $messages;
     }
 
     protected function validate($form)

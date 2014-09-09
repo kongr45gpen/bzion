@@ -10,7 +10,7 @@
  * A custom page
  * @package    BZiON\Models
  */
-class Page extends AliasModel implements PermissionModel
+class Page extends AliasModel
 {
     /**
      * The content of the page
@@ -204,6 +204,29 @@ class Page extends AliasModel implements PermissionModel
         return array("bans", "index", "login", "logout", "matches",
                      "messages", "news", "notifications", "pages",
                      "players", "servers", "teams");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getActiveStatuses()
+    {
+        return array('live', 'revision');
+    }
+
+    /**
+     * Get a query builder for pages
+     * @return QueryBuilder
+     */
+    public static function getQueryBuilder()
+    {
+        return new QueryBuilder('Page', array(
+            'columns' => array(
+                'name' => 'name',
+                'status' => 'status'
+            ),
+            'name' => 'name'
+        ));
     }
 
     /**
