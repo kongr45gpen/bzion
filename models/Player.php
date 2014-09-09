@@ -435,7 +435,6 @@ class Player extends IdenticonModel implements NamedModel
      */
     public function setAvatar($avatar)
     {
-        $this->avatar = $avatar;
         $this->update("avatar", $avatar, 's');
     }
 
@@ -453,7 +452,6 @@ class Player extends IdenticonModel implements NamedModel
         $this->setVerified(false);
         $this->generateNewConfirmCode();
 
-        $this->email = $email;
         $this->update("email", $email, 's');
     }
 
@@ -502,7 +500,6 @@ class Player extends IdenticonModel implements NamedModel
      */
     public function setDescription($description)
     {
-        $this->description = $description;
         $this->update("description", $description, 's');
     }
 
@@ -512,7 +509,6 @@ class Player extends IdenticonModel implements NamedModel
      */
     public function setTimezone($timezone)
     {
-        $this->timezone = $timezone;
         $this->update("timezone", $timezone, 's');
     }
 
@@ -522,7 +518,6 @@ class Player extends IdenticonModel implements NamedModel
      */
     public function setTeam($team)
     {
-        $this->team = $team;
         $this->update("team", $team, 'i');
     }
 
