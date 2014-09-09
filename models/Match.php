@@ -250,14 +250,9 @@ class Match extends PermissionModel implements NamedModel
      *
      * @return string The match's timestamp
      */
-    public function getTimestamp($format = "")
+    public function getTimestamp()
     {
-        if (empty($format))
-        {
-            return $this->timestamp->diffForHumans();
-        }
-
-        return $this->timestamp->format($format);
+        return $this->timestamp;
     }
 
     /**
@@ -528,7 +523,7 @@ class Match extends PermissionModel implements NamedModel
         $team_a->changeElo($diff);
         $team_b->changeElo(-$diff);
 
-        $match = static::create(array(
+        $match = self::create(array(
             'team_a' => $a,
             'team_b' => $b,
             'team_a_points' => $a_points,
@@ -575,15 +570,6 @@ class Match extends PermissionModel implements NamedModel
             $diff = 50*(0.5-$prob);
         } else {
             $diff = 50*(0-$prob);
-        }
-
-        // Apply ELO modifiers from bzion-config.php
-        $durations = unserialize(DURATION);
-        $diff *= (isset($durations[$duration])) ? $durations[$duration] : 1;
-
-        if (abs($diff) < 1 && $diff != 0) {
-            // ELOs such as 0.75 should round up to 1...
-            return ($diff > 0) ? 1 : -1;
         }
 
         // ...everything else is rounded down (-3.7 becomes -3 and 48.1 becomes 48)
