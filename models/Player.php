@@ -307,10 +307,7 @@ class Player extends IdenticonModel implements NamedModel
      */
     public function getLastLogin($human = true)
     {
-        if ($human)
-            return $this->last_login->diffForHumans();
-        else
-            return $this->last_login;
+        return $this->last_login;
     }
 
     /**
@@ -598,32 +595,6 @@ class Player extends IdenticonModel implements NamedModel
         return $this->setUsername($username);
     }
 
-
-    /**
-     * Give or remove a role to/form a player
-     *
-     * @param int    $role_id The role ID to add or remove
-     * @param string $action  Whether to "add" or "remove" a role for a player
-     *
-     * @return bool Whether the operation was successful or not
-     */
-    private function modifyRole($role_id, $action)
-    {
-        $role = new Role($role_id);
-
-        if ($role->isValid()) {
-            if ($action == "add") {
-                $this->db->query("INSERT INTO player_roles (user_id, role_id) VALUES (?, ?)", "ii", array($this->getId(), $role_id));
-            } elseif ($action == "remove") {
-                $this->db->query("DELETE FROM player_roles WHERE user_id = ? AND role_id = ?", "ii", array($this->getId(), $role_id));
-            }
-            $this->refresh();
-
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Given a player's BZID, get a player object
