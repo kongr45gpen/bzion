@@ -147,13 +147,6 @@ class Player extends IdenticonModel implements NamedModel
         $this->joined = new TimeDate($player['joined']);
         $this->last_login = new TimeDate($player['last_login']);
         $this->admin_notes = $player['admin_notes'];
-
-        $this->roles = Role::getRoles($this->id);
-        $this->permissions = array();
-
-        foreach ($this->roles as $role) {
-            $this->permissions = array_merge($this->permissions, $role->getPerms());
-        }
     }
 
     /**
