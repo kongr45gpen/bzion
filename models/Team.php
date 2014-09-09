@@ -146,10 +146,6 @@ class Team extends IdenticonModel
     public function addMember($id)
     {
         $player = new Player($id);
-
-        if (!$player->isTeamless())
-            throw new Exception("The player already belongs in a team");
-
         $player->setTeam($this->getId());
         $this->update('members', ++$this->members, "i");
 
@@ -474,11 +470,7 @@ class Team extends IdenticonModel
      */
     public function removeMember($id)
     {
-        if (!$this->isMember($id))
-            throw new Exception("The player is not a member of that team");
-
         $player = new Player($id);
-
         $player->update("team", NULL, "s");
         $this->update('members', --$this->members, "i");
     }

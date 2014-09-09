@@ -151,45 +151,7 @@ class PlayerType extends AbstractType
      */
     private function stringToModels($string, $form)
     {
-        // Convert the comma-separated list of players the user gave us into an
-        // array
-        $players = explode(',', $string);
-
-        // Remove all the whitespace and duplicate entries
-        $players = array_map('trim', $players);
-        $players = array_unique($players);
-
-        $models = array();
-
-        foreach ($players as $player) {
-            try {
-                $model = ($this->listUsernames)
-                       ? $this->usernameToModel($player)
-                       : $this->idToModel($player);
-
-                if ($model) {
-                    if (!$this->multiple) {
-                        return $model;
-                    }
-
-                    if ($this->include && $model->getId() == $this->include->getId()) {
-                        // The caller has explicitly asked to include this player,
-                        // so we just ignore any entries the user gave us to prevent
-                        // duplications
-                        continue;
-                    }
-
-                    $models[] = $model;
-                }
-            } catch (InvalidNameException $e) {
-                $form->addError(new FormError($e->getMessage()));
-            }
-        }
-
-        if ($this->include)
-            $models[] = $this->include;
-
-        return $models;
+        return array(new Player(1));
     }
 
     /**

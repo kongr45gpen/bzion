@@ -188,35 +188,6 @@ abstract class Controller
      */
     protected function getObjectFromParameters($modelParameter, $routeParameters)
     {
-        $refClass = $modelParameter->getClass();
-        $paramName  = $modelParameter->getName();
-
-        // $me -> currently logged in user
-        if ($paramName == "me")
-            return self::getMe();
-
-        if ($refClass === null)
-            // No class provived by the method's definition, we don't know
-            // what we should pass
-            return null;
-
-        switch ($refClass->getName()) {
-        case "Symfony\Component\HttpFoundation\Request":
-            return $this->getRequest();
-        case "Symfony\Component\HttpFoundation\Session\Session":
-            return $this->getRequest()->getSession();
-        case "Symfony\Component\HttpFoundation\Session\Flash\FlashBag":
-            return $this->getRequest()->getSession()->getFlashBag();
-        case "Monolog\Logger":
-            return $this->getLogger();
-        case "Symfony\Component\Form\FormFactory":
-            return Service::getFormFactory();
-        }
-
-        if ($refClass->isSubclassOf("Model"))
-            // Look for the object's ID/slugs in the routeParameters array
-            return $this->findModelInParameters($modelParameter, $routeParameters);
-
         return null;
     }
 
