@@ -6,6 +6,10 @@ _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
     defaults: { _defaultHandler: true }
 
+test_login:
+    pattern:    /login/{user}
+    defaults: { _controller: 'Login', _action: 'loginAsTestUser' }
+
 admin_list:
     pattern:    /admins
     defaults: { _controller: 'Admin', _action: 'list' }

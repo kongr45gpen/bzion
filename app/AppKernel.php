@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
@@ -149,6 +150,8 @@ class AppKernel extends Kernel
             $this->boot();
         }
 
+        d("Handling request for " .  $request->getUri());
+
         $event = new GetResponseEvent($this, $request, $type);
         $this->container->get('event_dispatcher')->dispatch(KernelEvents::REQUEST, $event);
 
@@ -169,6 +172,12 @@ class AppKernel extends Kernel
 
         $event = new FilterResponseEvent($this, $request, $type, $response);
         $this->container->get('event_dispatcher')->dispatch(KernelEvents::RESPONSE, $event);
+
+        if ($type == HttpKernelInterface::MASTER_REQUEST) {
+            if ($this->getContainer()->get('session')->isStarted()) {
+                $this->getContainer()->get('session')->save();
+            }
+        }
 
         return $response;
     }

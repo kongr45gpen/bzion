@@ -3,14 +3,22 @@
 {% block title %}GU League{% endblock %}
 
 {% block content %}
+    <style>
+        .big {
+            height: 50px;
+        }
+    </style>
+
     <main class="landing">
         <section class="cover">
             <article>
                 <h1>Welcome to Games United</h1>
                 <h2>Good clean fun... sorta</h2>
 
-                {% if me is invalid %}
-                    <a class="button green" href="#">Register</a>
+                {% if me is valid %}
+                    <a class="big button green" href="http://192.168.1.4/bzion/logout">logged in as {{ me.username }}</a>
+                {% else %}
+                    <a class="big button red" href="http://192.168.1.4/bzion/login/autoreport">anonymous</a>
                 {% endif %}
             </article>
         </section>
