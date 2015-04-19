@@ -7,7 +7,7 @@
 
 namespace BZIon\Form\Creator;
 
-use BZIon\Form\Type\ModelType;
+use BZIon\Form\Type\SimpleModelType;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -47,7 +47,7 @@ class TeamFormCreator extends ModelFormCreator
             $builder->add('delete_avatar', 'submit');
 
             // Let the user appoint a different leader
-            $builder->add('leader', new ModelType('Player', false, function ($query) use ($team) {
+            $builder->add('leader', new SimpleModelType('Player', false, function ($query) use ($team) {
                 // Only list players belonging in that team
                 return $query->where('team')->is($team);
             }));

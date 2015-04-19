@@ -7,7 +7,7 @@
 
 namespace BZIon\Form\Creator;
 
-use BZIon\Form\Type\ModelType;
+use BZIon\Form\Type\SimpleSimpleModelType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -22,7 +22,7 @@ class NewsFormCreator extends ModelFormCreator
     protected function build($builder)
     {
         return $builder
-            ->add('category', new ModelType('NewsCategory'))
+            ->add('category', new SimpleModelType('NewsCategory'))
             ->add('subject', 'text', array(
                 'constraints' => array(
                     new NotBlank(), new Length(array(

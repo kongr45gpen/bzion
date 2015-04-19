@@ -740,7 +740,9 @@ class Player extends AvatarModel implements NamedModel
      */
     public static function getFromUsername($username)
     {
-        return new Player(self::fetchIdFrom($username, 'username', 's'));
+        $player = new Player(self::fetchIdFrom($username, 'username', 's'));
+
+        return $player->inject('name', $username);
     }
 
     /**

@@ -8,7 +8,7 @@
 namespace BZIon\Form\Creator;
 
 use BZIon\Form\Type\IpType;
-use BZIon\Form\Type\PlayerType;
+use BZIon\Form\Type\ModelType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -23,7 +23,7 @@ class BanFormCreator extends ModelFormCreator
     protected function build($builder)
     {
         return $builder
-            ->add('player', new PlayerType(), array(
+            ->add('player', new ModelType('player'), array(
                 'disabled' => $this->isEdit(),
             ))
             ->add(
@@ -33,6 +33,9 @@ class BanFormCreator extends ModelFormCreator
                 ))->setDataLocked(false) // Don't lock the data so we can change
                                          // the default value later if needed
             )
+            ->add('teamplayer', new ModelType(array('TEAM','PLAYER')), array(
+                'disabled' => $this->isEdit(),
+            ))
             ->add(
                 $builder->create('expiration', 'datetime', array(
                     'data' => \TimeDate::now(),
@@ -40,6 +43,7 @@ class BanFormCreator extends ModelFormCreator
             )
             ->add('reason', 'text', array(
                 'constraints' => new NotBlank(),
+                'required' => false// TODO: BAD BAD BAD NOT GOOD FIXME TOAST
             ))
             ->add('server_join_allowed', 'checkbox', array(
                 'data'     => true,
@@ -63,7 +67,7 @@ class BanFormCreator extends ModelFormCreator
      */
     public function fill($form, $ban)
     {
-        $form->get('player')->get('players')->setData($ban->getVictim());
+        $form->get('player')->setData($ban->getVictim());
         $form->get('reason')->setData($ban->getReason());
         $form->get('server_message')->setData($ban->getServerMessage());
         $form->get('server_join_allowed')->setData($ban->allowedServerJoin());

@@ -578,7 +578,9 @@ class Team extends AvatarModel
      */
     public static function getFromName($name)
     {
-        return new Team(self::fetchIdFrom($name, 'name', 's'));
+        $team = new Team(self::fetchIdFrom($name, 'name', 's'));
+
+        return $team->inject('name', $name);
     }
 
     /**

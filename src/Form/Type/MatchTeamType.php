@@ -15,7 +15,7 @@ class MatchTeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('team', new ModelType('Team'))
+            ->add('team', new SimpleModelType('Team'))
             ->add('score', 'integer', array(
                 'constraints' => array(
                     new NotBlank(),
