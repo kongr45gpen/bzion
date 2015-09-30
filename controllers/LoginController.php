@@ -22,7 +22,10 @@ class LoginController extends HTMLController
         $token = $query->get("token");
         $username = $query->get("username");
 
+        var_dump($token, $username);
+
         if (!$token || !$username) {
+            var_dump("I am now throwing a new bad request exception");
             throw new BadRequestException();
         }
 
