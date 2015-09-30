@@ -188,13 +188,13 @@ class AppKernel extends Kernel
             } catch (Exception $e) {
                 var_dump("there's been an exception");
                 $a = $this->handleException($e, $request, $type);
+                var_dump($a);
             }
         } else {
             var_dump("not handling exceptions");
             $a = $this->handleRaw($request, $type, $catch);
         }
         
-        var_dump($a);
         return $a;
     }
 
