@@ -1,6 +1,4 @@
 language: php
-php:
-  - hhvm
 
 matrix:
     include:
