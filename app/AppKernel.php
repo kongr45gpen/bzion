@@ -179,16 +179,23 @@ class AppKernel extends Kernel
         if (false === $this->booted) {
             $this->boot();
         }
+        
+        var_dump("welcome to the request handler");
 
         if ($catch && !$this->isDebug()) {
             try {
-                return $this->handleRaw($request, $type, $catch);
+                $a = $this->handleRaw($request, $type, $catch);
             } catch (Exception $e) {
-                return $this->handleException($e, $request, $type);
+                var_dump("there's been an exception");
+                $a = $this->handleException($e, $request, $type);
             }
         } else {
-            return $this->handleRaw($request, $type, $catch);
+            var_dump("not handling exceptions");
+            $a = $this->handleRaw($request, $type, $catch);
         }
+        
+        var_dump($a);
+        return $a;
     }
 
     private function handleRaw(Request $request, $type = self::MASTER_REQUEST, $catch = true)
