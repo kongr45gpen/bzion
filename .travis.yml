@@ -2,6 +2,7 @@ language: php
 
 matrix:
     include:
+        - php: 5.6
         - php: "hhvm"
           env:
             - NO_COVERAGE=1
