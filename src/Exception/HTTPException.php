@@ -14,6 +14,29 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 abstract class HTTPException extends Exception implements HttpExceptionInterface
 {
+    protected $message = null;
+
+    /**
+     * Construct new Exception
+     * @param null|string $message  The Exception's message
+     *                              (null for the default one)
+     * @param int         $code     The Exception's code
+     * @param Exception   $previous The previous exception
+     */
+    public function __construct(
+        $message = null,
+        $code = 0,
+        Exception $previous = null
+    ) {
+        if ($message === null) {
+            // Workaround for HHVM that doesn't support shadowing of properties
+            // for Exceptions
+            $message = $this->message;
+        }
+
+        return parent::__construct($message, $code, $previous);
+    }
+    
     /**
      * The HTTP error code that the response should include
      * @return int
