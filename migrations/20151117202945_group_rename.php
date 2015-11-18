@@ -18,5 +18,8 @@ class GroupRename extends AbstractMigration
 
         $messages = $this->table('messages');
         $messages->renameColumn('group_to', 'conversation_to');
+        
+        var_dump($this->query('SHOW CREATE TABLE `player_groups`;'));
+        var_dump($this->query('SHOW CREATE TABLE `team_group`;'));
     }
 }
