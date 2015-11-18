@@ -29,21 +29,26 @@ where
         var_dump("hi");
 
         $table = $this->dropForeignKeys($this->table('player_groups'))
-            ->rename('player_conversations')
-            ->renameColumn('group', 'conversation');
+    ->rename('player_conversations')
+            ->renameColumn('group', 'conversation')
+->addForeignKey('conversation', 'conversations', 'id', array('delete' => 'CASCADE'))
+                   ->addForeignKey('player', 'players', 'id', array('delete' => 'CASCADE'))        
+;
 
         $this->dropForeignKeys($this->table('team_groups'))
             ->rename('team_conversations')
-            ->renameColumn('group', 'conversation');
-
+            ->renameColumn('group', 'conversation')
+->addForeignKey('conversation', 'conversations', 'id', array('delete' => 'CASCADE'))
+                   ->addForeignKey('team', 'teams', 'id', array('delete' => 'CASCADE'))        ;
         $messages = $this->table('messages');
-        $this->dropForeignKeys($messages);
-        $messages->renameColumn('group_to', 'conversation_to');
+        $messages->renameColumn('group_to', 'conversation_to')
+        ->addForeignKey('conversation', 'conversations', 'id', array('delete' => 'CASCADE'));
         
         die();
     }
     
     private function dropForeignKeys($table) {
+	return $table;
         $keys = $table->getForeignKeys();
 	var_dump($keys);
         foreach ($keys as $key) {
