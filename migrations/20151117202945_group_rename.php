@@ -48,6 +48,8 @@ class GroupRename extends AbstractMigration
             $table->dropForeignKey($key->getColumns());
         }
         
+        $table->update();
+        
         return $table;
     }
 }
