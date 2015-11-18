@@ -8,7 +8,7 @@ class GroupRename extends AbstractMigration
     {
         
         var_dump($this->query('SHOW CREATE TABLE `player_groups`;'));
-        var_dump($this->query('SHOW CREATE TABLE `team_group`;'));
+        var_dump($this->query('SHOW CREATE TABLE `team_groups`;'));
         
         $this->table('groups')->rename('conversations');
 
