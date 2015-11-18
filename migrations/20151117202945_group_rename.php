@@ -7,7 +7,7 @@ class GroupRename extends AbstractMigration
     public function change()
     {
         
-        //var_dump($this->fetchAll('SHOW CREATE TABLE `player_groups`;'));
+//        var_dump($this->fetchAll('SHOW CREATE TABLE `messages`;'));
         //var_dump($this->fetchAll('SHOW CREATE TABLE `team_groups`;'));
         
         //var_dump($this->fetchAll("
@@ -15,7 +15,7 @@ class GroupRename extends AbstractMigration
  // TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME, REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
 //from INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 //where
-//  REFERENCED_TABLE_NAME = 'player_groups' OR REFERENCED_TABLE_NAME='team_groups';
+  REFERENCED_TABLE_NAME = 'messages';
   //      "));
         
         $this->execute("alter table player_groups drop foreign key player_groups_ibfk_1");
