@@ -5,37 +5,11 @@
     "license": "GPL-3.0",
 
     "require": {
-        "php"                        : ">=5.4.0",
-        "doctrine/inflector"         : "~1.0",
-        "ext-gd"                     : "*",
-        "nesbot/carbon"              : "~1.14",
-        "ramsey/array_column"        : "~1.1",
-        "robmorgan/phinx"            : "dev-0.4.x-dev",
-        "sensio/framework-extra-bundle": "~3.0",
-        "symfony/class-loader"       : "~2.7",
-        "symfony/config"             : "~2.7",
-        "symfony/console"            : "~2.7",
-        "symfony/debug-bundle"       : "~2.7",
-        "symfony/event-dispatcher"   : "~2.7",
-        "symfony/expression-language": "~2.7",
-        "symfony/framework-bundle"   : "~2.7",
-        "symfony/finder"             : "~2.7",
-        "symfony/form"               : "~2.7",
-        "symfony/http-kernel"        : "~2.7",
-        "symfony/http-foundation"    : "~2.7",
-        "symfony/icu"                : "1.0.*",
-        "symfony/monolog-bundle"     : "~2.7",
-        "symfony/process"            : "~2.7",
-        "symfony/routing"            : "~2.7",
-        "symfony/security-core"      : "~2.7",
-        "symfony/security-csrf"      : "~2.7",
-        "twig/twig"                  : "~1.18",
-        "yzalis/identicon"           : "1.1.*@dev"
+        "robmorgan/phinx"            : "dev-0.4.x-dev"
     },
     "require-dev": {
         "php": ">=5.5.0",
-        "composer/composer": "dev-master",
-        "jdorn/sql-formatter": "~1.2"
+        "composer/composer": "dev-master"
     },
 
     "scripts": {
