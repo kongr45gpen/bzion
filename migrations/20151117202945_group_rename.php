@@ -44,6 +44,7 @@ class GroupRename extends AbstractMigration
     
     private function dropForeignKeys($table) {
         $keys = $table->getForeignKeys();
+	var_dump($keys);
         foreach ($keys as $key) {
             $table->dropForeignKey($key->getColumns(), $key->getConstraint());
         }
