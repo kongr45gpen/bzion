@@ -20,8 +20,8 @@ where
         
         $this->execute("alter table player_groups drop foreign key player_groups_ibfk_1");
         $this->execute("alter table player_groups drop foreign key player_groups_ibfk_2");
-        //$this->execute("alter table team_groups drop foreign key team_groups_ibfk_1");
-        //$this->execute("alter table team_groups drop foreign key team_groups_ibfk_2");
+        $this->execute("alter table team_groups drop foreign key team_groups_ibfk_1");
+        $this->execute("alter table team_groups drop foreign key team_groups_ibfk_2");
         
         $this->table('groups')->rename('conversations');
         
