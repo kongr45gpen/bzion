@@ -16,7 +16,12 @@ class GroupRename extends AbstractMigration
 from INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 where
   REFERENCED_TABLE_NAME = 'player_groups' OR REFERENCED_TABLE_NAME='team_groups';
-        "))
+        "));
+        
+        $this->execute("alter table player_groups drop foreign key player_groups_ibfk_1");
+        $this->execute("alter table player_groups drop foreign key player_groups_ibfk_2");
+        //$this->execute("alter table team_groups drop foreign key team_groups_ibfk_1");
+        //$this->execute("alter table team_groups drop foreign key team_groups_ibfk_2");
         
         $this->table('groups')->rename('conversations');
         
