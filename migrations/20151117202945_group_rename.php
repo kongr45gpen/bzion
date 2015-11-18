@@ -6,6 +6,10 @@ class GroupRename extends AbstractMigration
 {
     public function change()
     {
+        
+        var_dump($this->query('SHOW CREATE TABLE `player_groups`;'));
+        var_dump($this->query('SHOW CREATE TABLE `team_group`;'));
+        
         $this->table('groups')->rename('conversations');
 
         $this->table('player_groups')
@@ -19,7 +23,6 @@ class GroupRename extends AbstractMigration
         $messages = $this->table('messages');
         $messages->renameColumn('group_to', 'conversation_to');
         
-        var_dump($this->query('SHOW CREATE TABLE `player_groups`;'));
-        var_dump($this->query('SHOW CREATE TABLE `team_group`;'));
+
     }
 }
