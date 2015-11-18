@@ -7,7 +7,7 @@ class GroupRename extends AbstractMigration
     public function change()
     {
         
-//        var_dump($this->fetchAll('SHOW CREATE TABLE `messages`;'));
+        var_dump($this->fetchAll('SHOW CREATE TABLE `messages`;'));
         //var_dump($this->fetchAll('SHOW CREATE TABLE `team_groups`;'));
         
        var_dump($this->fetchAll("
@@ -22,6 +22,7 @@ where
         $this->execute("alter table player_groups drop foreign key player_groups_ibfk_2");
         $this->execute("alter table team_groups drop foreign key team_groups_ibfk_1");
         $this->execute("alter table team_groups drop foreign key team_groups_ibfk_2");
+        $this->execute("alter table messages drop foreign key messages_ibfk_1");
         
      //   $this->table('groups')->rename('conversations');
         
